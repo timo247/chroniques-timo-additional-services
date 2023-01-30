@@ -13,7 +13,7 @@ class PodcastRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class PodcastRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "podcast_id" => "numeric",
+            "no" => "numeric",
+            "title" => "alpha_numeric",
+            "characters" => "array",
+            "tags" =>  'array',
         ];
     }
 }
