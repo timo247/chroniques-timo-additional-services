@@ -23,12 +23,13 @@ class PodcastRequest extends FormRequest
      */
     public function rules()
     {
+        var_dump($this);
         return [
             "podcast_id" => "numeric",
             "no" => "numeric",
             "title" => "alpha_numeric",
-            "characters" => "array",
-            "tags" =>  'array',
+            "characters" => "string",
+            "tags" =>  'string',
         ];
     }
 }

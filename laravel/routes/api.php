@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('podcasts', PodcastsController::class, ['only' => ['index']]);
+Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'store']]);
