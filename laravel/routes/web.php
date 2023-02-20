@@ -22,7 +22,7 @@ Route::get('/', function () {
 });
 
 Route::resource('articles', ArticleController::class, ['except' => ['show', 'edit', 'update']]);
-Route::resource('podcasts', PodcastsController::class, ['only' => ['index']]);
+Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'add', 'store']]);
 
 
 Auth::routes();

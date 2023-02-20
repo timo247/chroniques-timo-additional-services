@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('no');
             $table->string('title');
             $table->string('path');
+            $table->string('description');
             $table->foreign('podcast_id')->references('id')->on('podcasts')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(["id", "podcast_id"]);
             $table->timestamps();

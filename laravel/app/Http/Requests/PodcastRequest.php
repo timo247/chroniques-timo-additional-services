@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Controllers\PodcastsController;
 
 class PodcastRequest extends FormRequest
 {
@@ -24,12 +25,17 @@ class PodcastRequest extends FormRequest
     public function rules()
     {
         var_dump($this);
-        return [
-            "podcast_id" => "numeric",
-            "no" => "numeric",
-            "title" => "alpha_numeric",
-            "characters" => "string",
-            "tags" =>  'string',
-        ];
+        if (!PodcastsController::verifyPodcastExistence($this->input('podcast_id'))) {
+            return false;
+        } else {
+            return [
+                "podcast_id" => "numeric",
+                "no" => "numeric",
+                "title" => "alpha_numeric",
+                "characters" => "string",
+                "tags" =>  'string',
+                "file" => 'mp3',
+            ];
+        }
     }
 }

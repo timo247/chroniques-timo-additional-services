@@ -14,14 +14,16 @@ class Episode extends Model
     protected $fillable = [
         "podcast_id",
         "no",
-        "title"
+        "title", "description"
     ];
 
-    public function podcast(){
+    public function podcast()
+    {
         return $this->belongsTo(Podcast::class);
     }
 
-    public function commentaires(){
+    public function commentaires()
+    {
         return $this->hasMany(Commentaire::class);
     }
 }

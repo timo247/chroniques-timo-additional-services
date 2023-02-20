@@ -6,6 +6,7 @@ use App\Models\Episode;
 use App\Models\Podcast;
 use Illuminate\Http\Request;
 use App\Http\Requests\PodcastRequest;
+use Illuminate\Support\Facades\Storage;
 
 class PodcastsController extends Controller
 {
@@ -32,11 +33,23 @@ class PodcastsController extends Controller
 
     public function create()
     {
-        //
+        $possiblePodcastIds = Podcast::select('podcast_id');
+        return view('/episodes/view_create_episode')->with($possiblePodcastIds, $possiblePodcastIds);
     }
 
     public function store(PodcastRequest $request)
     {
+        $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
+        $fileName = $podcastName . '-' . $request->input('no');
+        $filePath = 'audio/podcasts/' - $podcastName . '/' . $fileName;
+        Storage::putFileAs('audio/podcasts/' . $podcastName, $request->input('file'), $podcastName);
+        $episode = new Episode();
+        $episode->podcast_id = $request->input('podcast_id');
+        $episode->no = $request->input('no');
+        $episode->title = $request->input('title');
+        $episode->description = $request->input('description');
+        $episode->path = $filePath;
+        $episode->save();
     }
 
     // public function store(ConsommationRequest $request)
@@ -89,5 +102,21 @@ class PodcastsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function retrievePodcastName($podcastId)
+    {
+        $podcastNames = ['chroniques-economiques', 'digitime', 'anbu-savana'];
+        return $podcastNames[$podcastId];
+    }
+
+    public function verifyPodcastExistence($id)
+    {
+        $podcasts = Podcast::where('id', '=', $id)->toArray();
+        if (sizeof($podcasts) == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
