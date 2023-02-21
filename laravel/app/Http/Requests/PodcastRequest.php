@@ -25,17 +25,14 @@ class PodcastRequest extends FormRequest
     public function rules()
     {
         var_dump($this);
-        if (!PodcastsController::verifyPodcastExistence($this->input('podcast_id'))) {
-            return false;
-        } else {
-            return [
-                "podcast_id" => "numeric",
-                "no" => "numeric",
-                "title" => "alpha_numeric",
-                "characters" => "string",
-                "tags" =>  'string',
-                "file" => 'mp3',
-            ];
-        }
+        $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
+        return [
+            'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
+            'no' => 'numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
+            'title' => 'alpha_numeric',
+            'characters' => 'string',
+            'tags' =>  'string',
+            'file' => 'mp3',
+        ];
     }
 }
