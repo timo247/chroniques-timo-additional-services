@@ -17,14 +17,24 @@
                         {!! $errors->first('podcast_id', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('no') ? 'has-error' : '' !!}">
-                        <input class="form-control" placeholder="No" name="no" type="text">
+                        <input class="form-control" placeholder="No" name="no" type="number">
                         {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
                     </div>
-                    <input class="btn btn-info pull-right" type="submit" value="Envoyer">
-
-                    <div class="form-group {!! $errors->has('contenu') ? 'has-error' : '' !!}">
-                        <textarea class="form-control" placeholder="Contenu" name="contenu" cols="50" rows="10"></textarea>
-                        {!! $errors->first('contenu', '<small class="help-block">:message</small>') !!}
+                    <div class="form-group {!! $errors->has('title') ? 'has-error' : '' !!}">
+                        <input class="form-control" placeholder="Titre" name="title" type="text">
+                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
+                    </div>
+                    <div class="form-group {!! $errors->has('characters') ? 'has-error' : '' !!}">
+                        <input class="form-control" placeholder="Personnages" name="characters" type="text">
+                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
+                    </div>
+                    <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
+                        <input class="form-control" placeholder="Thèmes abordés" name="tags" type="text">
+                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
+                    </div>
+                    <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
+                        <input class="form-control" name="file" type="file" accept='.mp3,audio/*'>
+                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
                     </div>
                     <input class="btn btn-info pull-right" type="submit" value="Envoyer">
                 </form>

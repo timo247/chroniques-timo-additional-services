@@ -34,6 +34,7 @@ class PodcastsController extends Controller
     public function create()
     {
         $possiblePodcastIds = Podcast::select('podcast_id');
+        dd($possiblePodcastIds);
         return view('/episodes/view_create_episode')->with($possiblePodcastIds, $possiblePodcastIds);
     }
 
@@ -110,13 +111,14 @@ class PodcastsController extends Controller
         return $podcastNames[$podcastId];
     }
 
-    public function verifyPodcastExistence($id)
+    public function maxMinPodcastsId()
     {
-        $podcasts = Podcast::where('id', '=', $id)->toArray();
-        if (sizeof($podcasts) == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        $podcasts = Podcast::get();
+        dd($podcasts);
+        $possibleIdLimits = [
+            'min' => $podcasts->min('podcast_id'),
+            'max' => $podcasts->max('podcast_id')
+        ];
+        return $possibleIdLimits;
     }
 }

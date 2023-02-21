@@ -21,7 +21,10 @@ class EpisodesTableSeeder extends Seeder
                 'podcast_id' => 1,
                 'no' => $i,
                 'title' => 'Chroniques économiques épisode ' . $i,
-                'path' => storage_path('/audio/podcasts/chroniques-economiques/' . $i)
+                'path' => storage_path('/audio/podcasts/chroniques-economiques/' . $i),
+                'description' => 'random description',
+                'tags' => 'tag1, tag2',
+                'characters' => 'character1, character2'
             ]);
         }
 
@@ -31,9 +34,10 @@ class EpisodesTableSeeder extends Seeder
                 'podcast_id' => 2,
                 'no' => $i,
                 'title' => 'Digitime épisode ' . $i,
-                'path' => storage_path('/audio/podcasts/digitime/' . $i)
-
-
+                'path' => storage_path('/audio/podcasts/digitime/' . $i),
+                'description' => 'random description',
+                'tags' => 'tag1, tag2',
+                'characters' => 'character1, character2'
             ]);
         }
 
@@ -43,8 +47,10 @@ class EpisodesTableSeeder extends Seeder
                 'podcast_id' => 2,
                 'no' => $i,
                 'title' => 'Digitime épisode ' . $i,
-                'path' => storage_path('/audio/podcasts/digitime/' . $i)
-
+                'path' => storage_path('/audio/podcasts/digitime/' . $i),
+                'description' => 'random description',
+                'tags' => 'tag1, tag2',
+                'characters' => 'character1, character2'
             ]);
         }
 
@@ -54,8 +60,10 @@ class EpisodesTableSeeder extends Seeder
                 'podcast_id' => 3,
                 'no' => $i,
                 'title' => 'Anbu Savana épisode ' . $i,
-                'path' => storage_path('/audio/podcasts/anbu-savana/' . $i)
-
+                'path' => storage_path('/audio/podcasts/anbu-savana/' . $i),
+                'description' => 'random description',
+                'tags' => 'tag1, tag2',
+                'characters' => 'character1, character2'
             ]);
         }
     }

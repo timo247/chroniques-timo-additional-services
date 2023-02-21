@@ -14,7 +14,9 @@ class Episode extends Model
     protected $fillable = [
         "podcast_id",
         "no",
-        "title", "description"
+        "title",
+        "description",
+        "path",
     ];
 
     public function podcast()

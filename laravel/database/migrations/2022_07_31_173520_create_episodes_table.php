@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('path');
             $table->string('description');
+            $table->string('tags');
+            $table->string('characters');
             $table->foreign('podcast_id')->references('id')->on('podcasts')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(["id", "podcast_id"]);
             $table->timestamps();
