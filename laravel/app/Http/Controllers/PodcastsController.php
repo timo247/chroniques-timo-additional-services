@@ -115,13 +115,16 @@ class PodcastsController extends Controller
         return $podcastNames[$podcastId];
     }
 
-    public function maxMinPodcastsId()
+    public static function maxMinPodcastsId()
     {
-        $podcasts = Podcast::get();
-        dd($podcasts);
+        $podcasts = Podcast::select('id')->get()->toArray();
+        $arr = [];
+        foreach ($podcasts as $podcast) {
+            array_push($arr, $podcast['id']);
+        }
         $possibleIdLimits = [
-            'min' => $podcasts->min('podcast_id'),
-            'max' => $podcasts->max('podcast_id')
+            'min' => min($arr),
+            'max' => max($arr)
         ];
         return $possibleIdLimits;
     }

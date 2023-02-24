@@ -22,19 +22,19 @@
                     </div>
                     <div class="form-group {!! $errors->has('title') ? 'has-error' : '' !!}">
                         <input class="form-control" placeholder="Titre" name="title" type="text">
-                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
+                        {!! $errors->first('title', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('characters') ? 'has-error' : '' !!}">
                         <input class="form-control" placeholder="Personnages" name="characters" type="text">
-                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
+                        {!! $errors->first('characters', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
                         <input class="form-control" placeholder="Thèmes abordés" name="tags" type="text">
-                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
+                        {!! $errors->first('tags', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
                         <input class="form-control" name="file" type="file" accept='.mp3,audio/*'>
-                        {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
+                        {!! $errors->first('file', '<small class="help-block">:message</small>') !!}
                     </div>
                     <input class="btn btn-info pull-right" type="submit" value="Envoyer">
                 </form>
