@@ -20,6 +20,7 @@ class PodcastsController extends Controller
             } else {
                 $podcasts = Episode::get()->toArray();
             }
+            //dd($podcasts);
             return response()
                 ->json(['message' => 'podcasts successfully retrieved', 'data' => $podcasts]);
         } else {
@@ -33,9 +34,12 @@ class PodcastsController extends Controller
 
     public function create()
     {
-        $possiblePodcastIds = Podcast::select('podcast_id');
-        dd($possiblePodcastIds);
-        return view('/episodes/view_create_episode')->with($possiblePodcastIds, $possiblePodcastIds);
+        $possiblePodcasts = Podcast::select('id')->get()->toArray();
+        $possiblePodcastIds = [];
+        foreach ($possiblePodcasts as $podcast) {
+            array_push($possiblePodcastIds, $podcast['id']);
+        }
+        return view('/episodes/view_create_episode')->with('possiblePodcastIds', $possiblePodcastIds);
     }
 
     public function store(PodcastRequest $request)
