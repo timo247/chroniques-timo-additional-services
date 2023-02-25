@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Theme;
 use App\Models\Episode;
 use App\Models\Podcast;
+use App\Models\Character;
 use Illuminate\Http\Request;
 use App\Http\Requests\PodcastRequest;
 use Illuminate\Support\Facades\Storage;
@@ -36,10 +38,12 @@ class PodcastsController extends Controller
     {
         $possiblePodcasts = Podcast::select('id')->get()->toArray();
         $possiblePodcastIds = [];
+        $possibleThemes = $this->possibleThemes();
+        $possibleCharacters = $this->possibleCharacters();
         foreach ($possiblePodcasts as $podcast) {
             array_push($possiblePodcastIds, $podcast['id']);
         }
-        return view('/episodes/view_create_episode')->with('possiblePodcastIds', $possiblePodcastIds);
+        return view('/episodes/view_create_episode')->with(['possiblePodcastIds' => $possiblePodcastIds, 'possibleThemes' => $possibleThemes, 'possibleCharacters' => $possibleCharacters]);
     }
 
     public function store(PodcastRequest $request)
@@ -127,5 +131,17 @@ class PodcastsController extends Controller
             'max' => max($arr)
         ];
         return $possibleIdLimits;
+    }
+
+    public static function possibleThemes()
+    {
+        $possibleThemes = Theme::get()->toArray();
+        return $possibleThemes;
+    }
+
+    public static function possibleCharacters()
+    {
+        $possibleCharacters = Character::get()->toArray();
+        return $possibleCharacters;
     }
 }

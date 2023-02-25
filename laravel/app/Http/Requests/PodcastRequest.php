@@ -30,8 +30,8 @@ class PodcastRequest extends FormRequest
             'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
             'no' => 'numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
             'title' => 'alpha_num',
-            'characters' => 'alpha_num',
-            'tags' =>  'alpha_num',
+            'characters' => 'array',
+            'tags' =>  'array',
             'file' => 'mimetypes:audio/mp3',
         ];
     }

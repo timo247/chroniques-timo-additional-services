@@ -24,12 +24,22 @@
                         <input class="form-control" placeholder="Titre" name="title" type="text">
                         {!! $errors->first('title', '<small class="help-block">:message</small>') !!}
                     </div>
+
                     <div class="form-group {!! $errors->has('characters') ? 'has-error' : '' !!}">
-                        <input class="form-control" placeholder="Personnages" name="characters" type="text">
-                        {!! $errors->first('characters', '<small class="help-block">:message</small>') !!}
+                        <span>Characters</span>
+                        @foreach ($possibleCharacters as $char)
+                            <input type='checkbox' name="characters[]" value='{{ $char['name'] }}'>
+                            <label for='{{ $char['name'] }}'> {{ $char['name'] }} </label>
+                        @endforeach
                     </div>
+
                     <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
                         <input class="form-control" placeholder="Thèmes abordés" name="tags" type="text">
+
+                        @foreach ($possibleThemes as $theme)
+                            <input type='checkbox' name="tags[]" value='{{ $theme['value'] }}'>
+                            <label for='{{ $char['name'] }}'> {{ $theme['value'] }} </label>
+                        @endforeach
                         {!! $errors->first('tags', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
