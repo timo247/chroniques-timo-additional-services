@@ -36,14 +36,14 @@ class PodcastsController extends Controller
 
     public function create()
     {
-        $possiblePodcasts = Podcast::select('id')->get()->toArray();
-        $possiblePodcastIds = [];
+        $possiblePodcasts = Podcast::get()->toArray();
+        // $possiblePodcastIds = [];
         $possibleThemes = $this->possibleThemes();
         $possibleCharacters = $this->possibleCharacters();
-        foreach ($possiblePodcasts as $podcast) {
-            array_push($possiblePodcastIds, $podcast['id']);
-        }
-        return view('/episodes/view_create_episode')->with(['possiblePodcastIds' => $possiblePodcastIds, 'possibleThemes' => $possibleThemes, 'possibleCharacters' => $possibleCharacters]);
+        // foreach ($possiblePodcasts as $podcast) {
+        //     array_push($possiblePodcastIds, $podcast['id']);
+        // }
+        return view('/episodes/view_create_episode')->with(['possiblePodcasts' => $possiblePodcasts, 'possibleThemes' => $possibleThemes, 'possibleCharacters' => $possibleCharacters]);
     }
 
     public function store(PodcastRequest $request)

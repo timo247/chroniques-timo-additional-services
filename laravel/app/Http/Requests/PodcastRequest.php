@@ -24,15 +24,14 @@ class PodcastRequest extends FormRequest
      */
     public function rules()
     {
-        //dd($this);
         $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
         return [
             'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
             'no' => 'numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
-            'title' => 'alpha_num',
+            'title',
             'characters' => 'array',
             'tags' =>  'array',
-            'file' => 'mimetypes:audio/mp3',
+            'file' => 'mimes:audio/mp3',
         ];
     }
 }

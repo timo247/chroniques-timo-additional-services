@@ -6,12 +6,13 @@
         <div class="panel panel-info">
             <div class="panel-heading">Ajout d'un podcast</div>
             <div class="panel-body">
-                <form method="POST" action="{{ route('podcasts.store') }}" accept-charset="UTF-8">
+                <form method="POST" action="{{ route('podcasts.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group {!! $errors->has('podcast_id') ? 'has-error' : '' !!}">
-                        <select cname="podcast_id">
-                            @foreach ($possiblePodcastIds as $podcastId)
-                                <option value="{{ $podcastId }}">{{ $podcastId }}</option>
+                        <label>Saison du podcast</label>
+                        <select name="podcast_id">
+                            @foreach ($possiblePodcasts as $podcast)
+                                <option value="{{ $podcast['id'] }}">{{ $podcast['title'] }}</option>
                             @endforeach
                         </select>
                         {!! $errors->first('podcast_id', '<small class="help-block">:message</small>') !!}
@@ -26,7 +27,7 @@
                     </div>
 
                     <div class="form-group {!! $errors->has('characters') ? 'has-error' : '' !!}">
-                        <span>Characters</span>
+                        <label>Characters</label><br>
                         @foreach ($possibleCharacters as $char)
                             <input type='checkbox' name="characters[]" value='{{ $char['name'] }}'>
                             <label for='{{ $char['name'] }}'> {{ $char['name'] }} </label>
@@ -34,8 +35,7 @@
                     </div>
 
                     <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
-                        <input class="form-control" placeholder="Thèmes abordés" name="tags" type="text">
-
+                        <label>Themes</label><br>
                         @foreach ($possibleThemes as $theme)
                             <input type='checkbox' name="tags[]" value='{{ $theme['value'] }}'>
                             <label for='{{ $char['name'] }}'> {{ $theme['value'] }} </label>
@@ -43,7 +43,7 @@
                         {!! $errors->first('tags', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
-                        <input class="form-control" name="file" type="file" accept='.mp3,audio/*'>
+                        <input class="form-control" name="file" type="file">
                         {!! $errors->first('file', '<small class="help-block">:message</small>') !!}
                     </div>
                     <input class="btn btn-info pull-right" type="submit" value="Envoyer">
