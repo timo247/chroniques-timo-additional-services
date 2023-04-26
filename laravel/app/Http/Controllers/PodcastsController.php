@@ -48,6 +48,7 @@ class PodcastsController extends Controller
 
     public function store(PodcastRequest $request)
     {
+        dd("on passe ici");
         $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
         $fileName = $podcastName . '-' . $request->input('no');
         $filePath = 'audio/podcasts/' - $podcastName . '/' . $fileName;

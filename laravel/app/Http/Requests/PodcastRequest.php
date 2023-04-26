@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\PodcastsController;
 
@@ -25,13 +26,14 @@ class PodcastRequest extends FormRequest
     public function rules()
     {
         $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
+        //dd($this->file('audio-file')->getMimeType());
         return [
             'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
             'no' => 'numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
             'title',
             'characters' => 'array',
             'tags' =>  'array',
-            'file' => 'mimes:audio/mp3',
+            'audio-file' => 'mimetypes:audio/mpeg',
         ];
     }
 }
