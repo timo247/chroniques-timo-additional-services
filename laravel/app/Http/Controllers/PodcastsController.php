@@ -37,7 +37,6 @@ class PodcastsController extends Controller
     public function create()
     {
         $possiblePodcasts = Podcast::get()->toArray();
-        // $possiblePodcastIds = [];
         $possibleThemes = $this->possibleThemes();
         $possibleCharacters = $this->possibleCharacters();
         // foreach ($possiblePodcasts as $podcast) {
@@ -48,11 +47,13 @@ class PodcastsController extends Controller
 
     public function store(PodcastRequest $request)
     {
-        dd("on passe ici");
+        dd($request->file('audio-file'));
         $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
+        //dd($podcastName);
         $fileName = $podcastName . '-' . $request->input('no');
-        $filePath = 'audio/podcasts/' - $podcastName . '/' . $fileName;
-        Storage::putFileAs('audio/podcasts/' . $podcastName, $request->input('file'), $podcastName);
+        $filePath = 'audio/podcasts/' . $podcastName . '/' . $fileName;
+        dd($filePath, $request->input('audio-file'));
+        Storage::putFileAs($filePath, $request->input('file'), $podcastName);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
         $episode->no = $request->input('no');
@@ -60,6 +61,7 @@ class PodcastsController extends Controller
         $episode->description = $request->input('description');
         $episode->path = $filePath;
         $episode->save();
+        dd($episode);
     }
 
     // public function store(ConsommationRequest $request)
@@ -117,7 +119,7 @@ class PodcastsController extends Controller
     public function retrievePodcastName($podcastId)
     {
         $podcastNames = ['chroniques-economiques', 'digitime', 'anbu-savana'];
-        return $podcastNames[$podcastId];
+        return $podcastNames[$podcastId - 1];
     }
 
     public static function maxMinPodcastsId()
