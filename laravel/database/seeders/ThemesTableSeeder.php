@@ -31,11 +31,18 @@ class ThemesTableSeeder extends Seeder
             'Sagesse',
             'Technologie',
             'Réussite',
-            'Écherc',
+            'Échec',
             'Sociabilité',
             'Générosité',
             'Courage',
-            'Avarice'
+            'Avarice',
+            'Stress',
+            'Travail',
+            'Réussite',
+            'isiveté',
+            'Repos',
+            'Intelligence',
+            'Ignorance'
         ];
 
         foreach ($themes as $theme) {

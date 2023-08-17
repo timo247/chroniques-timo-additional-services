@@ -25,6 +25,10 @@
                         <input class="form-control" placeholder="Titre" name="title" type="text">
                         {!! $errors->first('title', '<small class="help-block">:message</small>') !!}
                     </div>
+                    <div class="form-group {!! $errors->has('description') ? 'has-error' : '' !!}">
+                        <input class="form-control" placeholder="Description" name="description" type="text">
+                        {!! $errors->first('description', '<small class="help-block">:message</small>') !!}
+                    </div>
 
                     <div class="form-group {!! $errors->has('characters') ? 'has-error' : '' !!}">
                         <label>Characters</label><br>

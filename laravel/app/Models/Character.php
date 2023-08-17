@@ -15,6 +15,7 @@ class Character extends Model
 
     public function episodes()
     {
-        return $this->belongsToMany(Episode::class);
+        return $this->belongsToMany(Episode::class, 'character_episode', 'character_id', 'episode_id')
+            ->withTimestamps();
     }
 }

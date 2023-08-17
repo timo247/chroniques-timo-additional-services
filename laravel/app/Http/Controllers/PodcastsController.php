@@ -47,13 +47,13 @@ class PodcastsController extends Controller
 
     public function store(PodcastRequest $request)
     {
-        dd($request->file('audio-file'));
+        //dd($request->file('audio-file'));
         $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
         //dd($podcastName);
         $fileName = $podcastName . '-' . $request->input('no');
         $filePath = 'audio/podcasts/' . $podcastName . '/' . $fileName;
-        dd($filePath, $request->input('audio-file'));
-        Storage::putFileAs($filePath, $request->input('file'), $podcastName);
+        //dd($filePath, $request->file('audio-file'));
+        Storage::putFileAs($filePath, $request->file('audio-file'), $podcastName);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
         $episode->no = $request->input('no');

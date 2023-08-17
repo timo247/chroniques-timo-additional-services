@@ -23,8 +23,6 @@ class EpisodesTableSeeder extends Seeder
                 'title' => 'Chroniques économiques épisode ' . $i,
                 'path' => storage_path('/audio/podcasts/chroniques-economiques/' . $i),
                 'description' => 'random description',
-                'tags' => 'tag1, tag2',
-                'characters' => 'character1, character2'
             ]);
         }
 
@@ -36,8 +34,6 @@ class EpisodesTableSeeder extends Seeder
                 'title' => 'Digitime épisode ' . $i,
                 'path' => storage_path('/audio/podcasts/digitime/' . $i),
                 'description' => 'random description',
-                'tags' => 'tag1, tag2',
-                'characters' => 'character1, character2'
             ]);
         }
 
@@ -49,8 +45,6 @@ class EpisodesTableSeeder extends Seeder
                 'title' => 'Digitime épisode ' . $i,
                 'path' => storage_path('/audio/podcasts/digitime/' . $i),
                 'description' => 'random description',
-                'tags' => 'tag1, tag2',
-                'characters' => 'character1, character2'
             ]);
         }
 
@@ -62,8 +56,6 @@ class EpisodesTableSeeder extends Seeder
                 'title' => 'Anbu Savana épisode ' . $i,
                 'path' => storage_path('/audio/podcasts/anbu-savana/' . $i),
                 'description' => 'random description',
-                'tags' => 'tag1, tag2',
-                'characters' => 'character1, character2'
             ]);
         }
     }

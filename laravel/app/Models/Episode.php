@@ -17,6 +17,8 @@ class Episode extends Model
         "title",
         "description",
         "path",
+        "tags",
+        "characters"
     ];
 
     public function podcast()
@@ -27,5 +29,17 @@ class Episode extends Model
     public function commentaires()
     {
         return $this->hasMany(Commentaire::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'episode_tag', 'episode_id', 'tag_id')
+            ->withTimestamps();
+    }
+
+    public function characters()
+    {
+        return $this->belongsToMany(Character::class, 'character_episode', 'character_id', 'episode_id')
+            ->withTimestamps();
     }
 }

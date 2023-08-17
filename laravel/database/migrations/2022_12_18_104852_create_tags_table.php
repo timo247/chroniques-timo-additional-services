@@ -8,6 +8,9 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * Les tags sont les éléments permettant la classification future en collections de podcasts.
+     * L'onglet value est celui lu par l'utilisateur final
+     * L'onglet name est le nom attribué, qui ne contient que des lettres minuscules a-z et d'éventuels tirets
      *
      * @return void
      */
@@ -16,8 +19,9 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->integer('episode_id');
             $table->id();
+            $table->string('name')->unique();
+            $table->string('value');
             $table->timestamps();
-            $table->foreign('episode_id')->references('id')->on('episodes')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
