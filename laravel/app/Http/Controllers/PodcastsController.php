@@ -50,10 +50,10 @@ class PodcastsController extends Controller
         //dd($request->file('audio-file'));
         $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
         //dd($podcastName);
-        $fileName = $podcastName . '-' . $request->input('no');
-        $filePath = 'audio/podcasts/' . $podcastName . '/' . $fileName;
+        $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
+        $filePath = 'audio/podcasts/' . $podcastName;
         //dd($filePath, $request->file('audio-file'));
-        Storage::putFileAs($filePath, $request->file('audio-file'), $podcastName);
+        Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
         $episode->no = $request->input('no');
