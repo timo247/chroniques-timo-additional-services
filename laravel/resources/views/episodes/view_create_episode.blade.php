@@ -33,7 +33,7 @@
                     <div class="form-group {!! $errors->has('characters') ? 'has-error' : '' !!}">
                         <label>Characters</label><br>
                         @foreach ($possibleCharacters as $char)
-                            <input type='checkbox' name="characters[]" value='{{ $char['name'] }}'>
+                            <input type='checkbox' name="characters[]" value='{{ $char['id'] }}'>
                             <label for='{{ $char['name'] }}'> {{ $char['name'] }} </label>
                         @endforeach
                     </div>

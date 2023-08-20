@@ -9,6 +9,7 @@ use App\Models\Character;
 use Illuminate\Http\Request;
 use App\Http\Requests\PodcastRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PodcastsController extends Controller
 {
@@ -47,13 +48,10 @@ class PodcastsController extends Controller
 
     public function store(PodcastRequest $request)
     {
-        //dd($request->file('audio-file'));
         $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
-        //dd($podcastName);
         $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
         $filePath = 'audio/podcasts/' . $podcastName;
-        //dd($filePath, $request->file('audio-file'));
-        Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
+        //Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
         $episode->no = $request->input('no');
@@ -61,6 +59,13 @@ class PodcastsController extends Controller
         $episode->description = $request->input('description');
         $episode->path = $filePath;
         $episode->save();
+
+        //Ajouter les personnages affiliés à l'épisode
+        $characters = Character::findOrFail($request->input('characters'));
+        $episode->characters()->attach($request->input('characters'));
+        dd($episode->characters);
+
+        //Ajouter les tags affiliés à l'épisode
         dd($episode);
     }
 
