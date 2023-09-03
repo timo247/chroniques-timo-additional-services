@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PodcastsController;
 
 /*
@@ -15,8 +16,15 @@ use App\Http\Controllers\PodcastsController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/test', function () {
+    return response()->json(['name' => 'Abigail', 'state' => 'CA']);
 });
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
-Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'store']]);
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+// Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'store']]);

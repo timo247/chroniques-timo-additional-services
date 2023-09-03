@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Theme;
 use App\Models\Episode;
 use App\Models\Podcast;
@@ -63,10 +64,10 @@ class PodcastsController extends Controller
         //Ajouter les personnages affiliés à l'épisode
         $characters = Character::findOrFail($request->input('characters'));
         $episode->characters()->attach($request->input('characters'));
-        dd($episode->characters);
-
         //Ajouter les tags affiliés à l'épisode
-        dd($episode);
+        $existingTags = Tag::findOrFail($request->input('tags'));
+        $episode->tags()->attach($request->input('tags'));
+        dd($episode->tags);
     }
 
     // public function store(ConsommationRequest $request)

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\TagsTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PodcastsTableSeeder::class);
         $this->call(EpisodesTableSeeder::class);
         $this->call(CharactersTableSeeder::class);
-        $this->call(ThemesTableSeeder::class);
+        $this->call(TagsTableSeeder::class);
         //$this->call(CommentairesTableSeeder::class);
     }
 }

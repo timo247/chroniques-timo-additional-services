@@ -25,7 +25,7 @@ Route::resource('articles', ArticleController::class, ['except' => ['show', 'edi
 Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'create', 'store']]);
 
 
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -33,4 +33,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('logout', [LoginController::class, 'logout']);
+//Route::get('logout', [LoginController::class, 'logout']);
