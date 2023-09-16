@@ -1,8 +1,11 @@
-## Problème de localisation du fichier php.ini
+## Next steps
 
-commande: php --ini
-sources
-https://stackoverflow.com/questions/35249620/the-openssl-extension-is-required-for-ssl-tls-protection
+PArtie authenticating de la resource laravel auth sanctum
+
+## Rappel au momment du déploiement
+
+Modifier la valeur de la variable domain dans le fichier config/session.php
+https://laravel.com/docs/10.x/sanctum#spa-configuration
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 

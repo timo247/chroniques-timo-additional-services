@@ -20,6 +20,7 @@ Route::get('/test', function () {
     return response()->json(['name' => 'Abigail', 'state' => 'CA']);
 });
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
 
