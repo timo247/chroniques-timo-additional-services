@@ -19,33 +19,19 @@ class AuthController extends BaseController
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
-        var_dump($user);
-        //die;
         $token = $user->createToken('auth_token')->plainTextToken;
-        dd($token);
-        return $this->sendResponse(['token' => $token, 'user' => $user->toArray()], 'User register successfully.');
+        return $this->sendResponse(['access_token' => $token, 'user' => $user->toArray()], 'User register successfully.');
     }
 
     public function login(Request $request)
     {
-        // if (!Auth::attempt($request->only('email', 'password'))) {
-        //     return response()->json([
-        //         'message' => 'Invalid login details'
-        //     ], 401);
-        // }
-
-
         $user = User::where('email', $request['email'])->firstOrFail();
-
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-
-        return $user->createToken($request->device_name)->plainTextToken;
         $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
@@ -54,6 +40,6 @@ class AuthController extends BaseController
 
     public function me(Request $request)
     {
-        return $request->user();
+        var_dump($request->user());
     }
 }
