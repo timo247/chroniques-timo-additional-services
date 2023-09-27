@@ -6,68 +6,238 @@ PArtie authenticating de la resource laravel auth sanctum
 
 Modifier la valeur de la variable domain dans le fichier config/session.php
 https://laravel.com/docs/10.x/sanctum#spa-configuration
+https://www.youtube.com/watch?v=ajUST-jUMeg
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Idéees pour la suite
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+-   Faire des séries d'épisodes préméditées par personnage et par thématique
 
-## About Laravel
+# Podcast Management App API Endpoints
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+NB: All endpoints described start with "/api/"
 
--   [Simple, fast routing engine](https://laravel.com/docs/routing).
--   [Powerful dependency injection container](https://laravel.com/docs/container).
--   Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
--   Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
--   Database agnostic [schema migrations](https://laravel.com/docs/migrations).
--   [Robust background job processing](https://laravel.com/docs/queues).
--   [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# _About the doc_
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The doc systematically provide infos for routes following that order:
 
-## Learning Laravel
+## /route url
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### REQUEST METHOD
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   Data to send to the api
+-   Action made by the api
+-   Data returned by the api
 
-## Laravel Sponsors
+# _Authentication_
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## /register
 
-### Premium Partners
+### POST
 
--   **[Vehikl](https://vehikl.com/)**
--   **[Tighten Co.](https://tighten.co)**
--   **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
--   **[64 Robots](https://64robots.com)**
--   **[Cubet Techno Labs](https://cubettech.com)**
--   **[Cyber-Duck](https://cyber-duck.co.uk)**
--   **[Many](https://www.many.co.uk)**
--   **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
--   **[DevSquad](https://devsquad.com)**
--   **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
--   **[OP.GG](https://op.gg)**
--   **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
--   **[Lendio](https://lendio.com)**
+-   {string username, string email, string password}
+-   Registers user
+-   return [token, user credentials]
 
-## Contributing
+### GET
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   nil
+-   register view
+-   register view data
 
-## Code of Conduct
+## /login
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### GET
 
-## Security Vulnerabilities
+-   nil
+-   login view
+-   login view data
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### POST
 
-## License
+-   {string email, string password}
+-   authenticate user
+-   [token, user credentials]
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## /logout
+
+### POST
+
+-   {token}
+-   logout user
+-   [username + deconnected]
+
+# _Podcast Management_
+
+## /podcasts{id}
+
+### GET
+
+-   podcast_id
+-   return podcast view
+-   podcast data
+
+### PUT
+
+-   podcast_id
+-   update podcast
+-   podcast data
+
+### DELETE
+
+-   podcast_id
+-   delete podcast
+-   podcast data
+
+## /podcasts
+
+### GET
+
+-   nil
+-   Display all podcasts
+-   [all podcasts]
+
+### POST
+
+-   {string title}
+-   create podcast
+-   podcast data
+
+## /podcasts/create
+
+-   GET
+-   Podcast creation view
+-   {msg: rdy to create podcast}
+
+## /episodes{id}
+
+### GET
+
+-   episode_id
+-   return episode view
+-   episode data (with tags, comments and characters)
+
+### PUT
+
+-   episode_id
+-   update episode
+-   podcast data
+
+### DELETE
+
+-   episode_id
+-   delete episode
+-   podcast data
+
+## /episodes
+
+### POST
+
+-   {int podcast_id, int no, string title, string description}
+-   create podcast episode
+-   episode data
+
+## /episodes/create
+
+-   GET
+-   Episode creation view
+-   {existing_podcasts, existing_characters, existing_tags}
+
+## /podcast{id}/episodes
+
+### GET
+
+-   {int podcast_id}
+-   display all podcast epidosdes
+-   podcast episodes data
+
+# _Tags Management_
+
+Tags are used to categorize podcasts
+
+## /tags{id}
+
+### GET
+
+-   tag_id
+-   return tag view (all affiliated episodes)
+-   tag data
+
+### PUT
+
+-   tag_id
+-   update tag
+-   tag data
+
+### DELETE
+
+-   tag_id
+-   delete tag
+-   tag data
+
+# _Characters Management_
+
+## /character{id}
+
+### GET
+
+-   character_id
+-   return character view (all affiliated episodes)
+-   character data
+
+### PUT
+
+-   character_id
+-   update character
+-   character data
+
+### DELETE
+
+-   character_id
+-   delete character
+-   character data
+
+## /character
+
+### POST
+
+-   {string name}
+-   create character
+-   character data
+
+# _Comments Management_
+
+## /commentaires{id}
+
+### GET
+
+-   id
+-   display one comment
+-   one comment
+
+## PUT
+
+-   id
+-   update comment
+-   updated_comment
+
+## DELETE
+
+-   id
+-   delete comment
+-   comment_data
+
+## /commentaires
+
+### POST
+
+-   {user_id, episode_id, value}
+-   create a comment
+-   created_comment
+
+## /user{id}/commentaires
+
+### GET
+
+-   user_id
+-   get all user comments
+-   all user comments

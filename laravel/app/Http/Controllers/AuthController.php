@@ -33,13 +33,21 @@ class AuthController extends BaseController
         }
         $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'access_token' => $token, 'user' => $user, "message" => "user logged in successfully"
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'user' => $request->user(), "message" => "user logged out successfully"
         ]);
     }
 
     public function me(Request $request)
     {
-        var_dump($request->user());
+        // var_dump($request->user());
+        var_dump("coucou");
     }
 }
