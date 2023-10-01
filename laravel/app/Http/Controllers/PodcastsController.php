@@ -16,24 +16,19 @@ class PodcastsController extends Controller
 {
     public function index(Request $request)
     {
-        $serialId = $request->input('serial_id');
-        $podcastId = $request->input('episode_id');
-        if ($podcastId == null) {
-            if ($serialId != null) {
-                $podcasts = Episode::where('podcast_id', '=', $serialId)->get()->toArray();
+        if ($request->input('episode_id') == null) {
+            if ($request->input('serial_id') != null) {
+                $podcasts = Episode::where('podcast_id', '=', $request->input('serial_id'))->get()->toArray();
             } else {
                 $podcasts = Episode::get()->toArray();
             }
-            //dd($podcasts);
             return response()
                 ->json(['message' => 'podcasts successfully retrieved', 'data' => $podcasts]);
         } else {
-            $podcast = Episode::where('id', '=', $podcastId)->firstOrFail();
+            $podcast = Episode::where('id', '=', $request->input('episode_id'))->firstOrFail();
             return response()
                 ->json(['message' => 'podcast successfully retrieved', 'data' => $podcast]);
         }
-        //dd($podcasts);
-
     }
 
     public function create()
@@ -41,9 +36,6 @@ class PodcastsController extends Controller
         $possiblePodcasts = Podcast::get()->toArray();
         $possibleThemes = $this->possibleThemes();
         $possibleCharacters = $this->possibleCharacters();
-        // foreach ($possiblePodcasts as $podcast) {
-        //     array_push($possiblePodcastIds, $podcast['id']);
-        // }
         return view('/episodes/view_create_episode')->with(['possiblePodcasts' => $possiblePodcasts, 'possibleThemes' => $possibleThemes, 'possibleCharacters' => $possibleCharacters]);
     }
 
@@ -69,38 +61,6 @@ class PodcastsController extends Controller
         $episode->tags()->attach($request->input('tags'));
         dd($episode->tags);
     }
-
-    // public function store(ConsommationRequest $request)
-    //     {
-    //         $input = $request->input();
-    //         //dd($request->file('image'));
-
-    //         $lastIndexedConso = Consommation::orderBy('id', 'desc')->limit('1')->get();
-    //         $newIndex = $lastIndexedConso[0]->id + 1;
-
-
-    //        $fileName = 'image-'.'etablissement-'.$input["etablissement_id"]."-consommation-".$newIndex.".png";  
-
-    //         $image = $request->file('image');
-    //         if($image!=null){
-    //         Storage::putFileAs('images', $image, $fileName);
-    //         }
-
-    //         $consommation = new Consommation();
-
-    //         $consommation->nom = $input["nom"];
-    //         $consommation->description = $input["description"];
-    //         $consommation->image_url = $fileName;
-    //         $consommation->categorie = $input["categorie"];
-    //         $consommation->prix =  $input["prix"];
-    //         $consommation->tags = $input["tags"];
-    //         $consommation->etablissement_id = $input["etablissement_id"];
-
-    //         //dd($consommation);
-    //         //dd($consommation);
-    //         $consommation->save();
-    //         return view('view_confirmation_creation_consommation')->with('etablissementId', $input['etablissement_id']);
-    //     }
 
     public function show($id)
     {

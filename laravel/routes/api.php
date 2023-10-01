@@ -20,9 +20,13 @@ Route::get('/test', function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/account', [AuthController::class, 'getAccount'])->middleware('auth:sanctum');
+
+Route::fallback(function () {
+    return response()->json(['message' => 'Route not found'], 404);
+});
 
 
-Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
 
 

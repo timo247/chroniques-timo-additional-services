@@ -41,13 +41,14 @@ class AuthController extends BaseController
     {
         $request->user()->currentAccessToken()->delete();
         return response()->json([
-            'user' => $request->user(), "message" => "user logged out successfully"
+            "message" => "user logged out successfully", 'user' => $request->user()
         ]);
     }
 
-    public function me(Request $request)
+    public function getAccount(Request $request)
     {
-        // var_dump($request->user());
-        var_dump("coucou");
+        return response()->json([
+            'user retrieved' => $request->user()
+        ]);
     }
 }
