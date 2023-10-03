@@ -2,82 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
-use App\Models\Theme;
-use App\Models\Episode;
 use App\Models\Podcast;
-use App\Models\Character;
 use Illuminate\Http\Request;
-use App\Http\Requests\PodcastRequest;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PodcastsController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        if ($request->input('episode_id') == null) {
-            if ($request->input('serial_id') != null) {
-                $podcasts = Episode::where('podcast_id', '=', $request->input('serial_id'))->get()->toArray();
-            } else {
-                $podcasts = Episode::get()->toArray();
-            }
-            return response()
-                ->json(['message' => 'podcasts successfully retrieved', 'data' => $podcasts]);
-        } else {
-            $podcast = Episode::where('id', '=', $request->input('episode_id'))->firstOrFail();
-            return response()
-                ->json(['message' => 'podcast successfully retrieved', 'data' => $podcast]);
-        }
+        //
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $possiblePodcasts = Podcast::get()->toArray();
-        $possibleThemes = $this->possibleThemes();
-        $possibleCharacters = $this->possibleCharacters();
-        return view('/episodes/view_create_episode')->with(['possiblePodcasts' => $possiblePodcasts, 'possibleThemes' => $possibleThemes, 'possibleCharacters' => $possibleCharacters]);
+        //
     }
 
-    public function store(PodcastRequest $request)
-    {
-        $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
-        $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
-        $filePath = 'audio/podcasts/' . $podcastName;
-        //Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
-        $episode = new Episode();
-        $episode->podcast_id = $request->input('podcast_id');
-        $episode->no = $request->input('no');
-        $episode->title = $request->input('title');
-        $episode->description = $request->input('description');
-        $episode->path = $filePath;
-        $episode->save();
-
-        //Ajouter les personnages affiliés à l'épisode
-        $characters = Character::findOrFail($request->input('characters'));
-        $episode->characters()->attach($request->input('characters'));
-        //Ajouter les tags affiliés à l'épisode
-        $existingTags = Tag::findOrFail($request->input('tags'));
-        $episode->tags()->attach($request->input('tags'));
-        dd($episode->tags);
-    }
-
-    public function show($id)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
         //
     }
 
-    public function edit($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
         //
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
         //
     }
 
-    public function destroy($id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
         //
     }
@@ -100,17 +81,5 @@ class PodcastsController extends Controller
             'max' => max($arr)
         ];
         return $possibleIdLimits;
-    }
-
-    public static function possibleThemes()
-    {
-        $possibleThemes = Theme::get()->toArray();
-        return $possibleThemes;
-    }
-
-    public static function possibleCharacters()
-    {
-        $possibleCharacters = Character::get()->toArray();
-        return $possibleCharacters;
     }
 }

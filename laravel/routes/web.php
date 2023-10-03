@@ -21,8 +21,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('articles', ArticleController::class, ['except' => ['show', 'edit', 'update']]);
-Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'create', 'store']]);
+// Route::resource('articles', ArticleController::class, ['except' => ['show', 'edit', 'update']]);
+// Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'create', 'store']]);
 
 
 //Auth::routes();

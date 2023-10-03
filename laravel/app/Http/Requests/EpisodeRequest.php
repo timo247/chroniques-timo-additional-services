@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\PodcastsController;
 
-class PodcastRequest extends FormRequest
+class PodcastCreationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
