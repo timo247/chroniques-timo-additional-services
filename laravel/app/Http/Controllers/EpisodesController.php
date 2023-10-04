@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EpisodeRequest;
 use App\Models\Tag;
 use App\Models\Theme;
 use App\Models\Episode;
 use App\Models\Podcast;
 use App\Models\Character;
 use Illuminate\Http\Request;
+use App\Http\Requests\EpisodeRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\EpisodeUpdateRequest;
+use App\Http\Requests\EpisodeCreationRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
@@ -40,7 +42,7 @@ class EpisodesController extends Controller
         return view('/episodes/view_create_episode')->with(['possiblePodcasts' => $possiblePodcasts, 'possibleThemes' => $possibleThemes, 'possibleCharacters' => $possibleCharacters]);
     }
 
-    public function store(EpisodeRequest $request)
+    public function store(EpisodeCreationRequest $request)
     {
         $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
         $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
@@ -73,11 +75,47 @@ class EpisodesController extends Controller
         //
     }
 
-    function update(Request $request, $id)
+    public function update(EpisodeUpdateRequest $request, $id)
     {
-        Podcast::findOrFail($id)->update($request->all());
-        return redirect('user')->withOk("L'utilisateur " . $request->input('name') .
-            " a été modifié");
+        // Retrouver l'épisode par son ID
+        $episode = Episode::findOrFail($id);
+
+        // Si la requête contient un fichier audio
+        if ($request->hasFile('audio-file')) {
+            // Supprimer l'ancien fichier audio s'il existe
+            if (Storage::exists($episode->path . '/' . $episode->audio_filename)) {
+                Storage::delete($episode->path . '/' . $episode->audio_filename);
+            }
+
+            // Enregistrer le nouveau fichier audio
+            $podcastName = $this->retrievePodcastName($episode->podcast_id);
+            $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
+            $filePath = 'audio/podcasts/' . $podcastName;
+            Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
+
+            // Mettre à jour le chemin du fichier audio de l'épisode
+            $episode->audio_filename = $fileName;
+            $episode->path = $filePath;
+        }
+
+        // Mettre à jour les autres propriétés de l'épisode s'il y a des valeurs dans la requête
+        if ($request->filled('no')) {
+            $episode->no = $request->input('no');
+        }
+        if ($request->filled('title')) {
+            $episode->title = $request->input('title');
+        }
+        if ($request->filled('description')) {
+            $episode->description = $request->input('description');
+        }
+
+        // Enregistrer les modifications de l'épisode
+        $episode->save();
+
+        // Vous pouvez également ajouter ici la logique pour mettre à jour les personnages et les tags affiliés à l'épisode si nécessaire.
+
+        // Rediriger l'utilisateur ou retourner une réponse appropriée
+        return redirect()->route('votre_route_de_vue', ['id' => $episode->id])->with('success', 'Épisode mis à jour avec succès');
     }
 
     public function destroy($id)

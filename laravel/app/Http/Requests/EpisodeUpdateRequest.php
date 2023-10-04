@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\PodcastsController;
 
-class PodcastCreationRequest extends FormRequest
+class EpisodeUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,13 +28,13 @@ class PodcastCreationRequest extends FormRequest
         $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
         //dd($this->file('audio-file')->getMimeType());
         return [
-            'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
-            'no' => 'numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
-            'title',
-            'description',
-            'characters' => 'array',
-            'tags' =>  'array',
-            'audio-file' => 'mimetypes:audio/mpeg',
+            'podcast_id' => 'nullable,numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
+            'no' => 'nullable,numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'characters' => 'nulable,array',
+            'tags' =>  'nullable,array',
+            'audio-file' => 'nullable,mimetypes:audio/mpeg',
         ];
     }
 }
