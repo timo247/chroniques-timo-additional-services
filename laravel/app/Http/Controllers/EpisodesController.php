@@ -44,16 +44,13 @@ class EpisodesController extends Controller
 
     public function store(EpisodeCreationRequest $request)
     {
-        $podcastName = $this->retrievePodcastName($request->input('podcast_id'));
-        $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
-        $filePath = 'audio/podcasts/' . $podcastName;
-        //Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
+        $filePathAndName = $this->getFilePathAndName($request->input('podcast_id'), $request->input('no'));
+        Storage::putFileAs($filePathAndName['path'], $filePathAndName['name']);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
         $episode->no = $request->input('no');
         $episode->title = $request->input('title');
         $episode->description = $request->input('description');
-        $episode->path = $filePath;
         $episode->save();
 
         //Ajouter les personnages affiliés à l'épisode
@@ -77,28 +74,20 @@ class EpisodesController extends Controller
 
     public function update(EpisodeUpdateRequest $request, $id)
     {
-        // Retrouver l'épisode par son ID
         $episode = Episode::findOrFail($id);
 
-        // Si la requête contient un fichier audio
         if ($request->hasFile('audio-file')) {
-            // Supprimer l'ancien fichier audio s'il existe
-            if (Storage::exists($episode->path . '/' . $episode->audio_filename)) {
-                Storage::delete($episode->path . '/' . $episode->audio_filename);
+            $filePathAndName = $this->getFilePathAndName($episode->podcast_id, $episode->no);
+            if (Storage::exists($filePathAndName['path'] . '/' . $filePathAndName['name'])) {
+                Storage::delete($filePathAndName['path'] . '/' . $filePathAndName['name']);
             }
-
-            // Enregistrer le nouveau fichier audio
             $podcastName = $this->retrievePodcastName($episode->podcast_id);
             $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
             $filePath = 'audio/podcasts/' . $podcastName;
             Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
-
-            // Mettre à jour le chemin du fichier audio de l'épisode
             $episode->audio_filename = $fileName;
             $episode->path = $filePath;
         }
-
-        // Mettre à jour les autres propriétés de l'épisode s'il y a des valeurs dans la requête
         if ($request->filled('no')) {
             $episode->no = $request->input('no');
         }
@@ -108,7 +97,6 @@ class EpisodesController extends Controller
         if ($request->filled('description')) {
             $episode->description = $request->input('description');
         }
-
         // Enregistrer les modifications de l'épisode
         $episode->save();
 
@@ -136,5 +124,13 @@ class EpisodesController extends Controller
     {
         $possibleCharacters = Character::get()->toArray();
         return $possibleCharacters;
+    }
+
+    public function getFilePathAndName($podcastId, $episodeNo)
+    {
+        $podcastName = $this->retrievePodcastName($podcastId);
+        $fileName = $podcastName . '-' . $episodeNo;
+        $filePath = 'audio/podcasts/' . $podcastName;
+        return ['path' => $filePath, 'name' => $fileName];
     }
 }
