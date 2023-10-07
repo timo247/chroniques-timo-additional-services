@@ -42,7 +42,7 @@ class EpisodesController extends Controller
         return view('/episodes/view_create_episode')->with(['possiblePodcasts' => $possiblePodcasts, 'possibleThemes' => $possibleThemes, 'possibleCharacters' => $possibleCharacters]);
     }
 
-    public function store(EpisodeCreationRequest $request)
+    public function store(Request $request)
     {
         $filePathAndName = $this->getFilePathAndName($request->input('podcast_id'), $request->input('no'));
         Storage::putFileAs($filePathAndName['path'], $filePathAndName['name']);
@@ -59,7 +59,7 @@ class EpisodesController extends Controller
         //Ajouter les tags affiliés à l'épisode
         $existingTags = Tag::findOrFail($request->input('tags'));
         $episode->tags()->attach($request->input('tags'));
-        dd($episode->tags);
+        return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
     }
 
     public function show($id)
@@ -77,11 +77,11 @@ class EpisodesController extends Controller
         $episode = Episode::findOrFail($id);
 
         if ($request->hasFile('audio-file')) {
-            $filePathAndName = $this->getFilePathAndName($episode->podcast_id, $episode->no);
-            if (Storage::exists($filePathAndName['path'] . '/' . $filePathAndName['name'])) {
-                Storage::delete($filePathAndName['path'] . '/' . $filePathAndName['name']);
+            $ancientPathAndName = $this->getFilePathAndName($episode->podcast_id, $episode->no);
+            if (Storage::exists($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'])) {
+                Storage::delete($ancientPathAndName['path'] . '/' . $ancientPathAndName['name']);
             }
-            $podcastName = $this->retrievePodcastName($episode->podcast_id);
+            $podcastName = PodcastsController::retrievePodcastName($episode->podcast_id);
             $fileName = $podcastName . '-' . $request->input('no') . '.mp3';
             $filePath = 'audio/podcasts/' . $podcastName;
             Storage::putFileAs($filePath, $request->file('audio-file'), $fileName);
@@ -128,9 +128,9 @@ class EpisodesController extends Controller
 
     public function getFilePathAndName($podcastId, $episodeNo)
     {
-        $podcastName = $this->retrievePodcastName($podcastId);
-        $fileName = $podcastName . '-' . $episodeNo;
+        $podcastName = PodcastsController::retrievePodcastName($podcastId);
         $filePath = 'audio/podcasts/' . $podcastName;
+        $fileName = $podcastName . '-' . $episodeNo;
         return ['path' => $filePath, 'name' => $fileName];
     }
 }

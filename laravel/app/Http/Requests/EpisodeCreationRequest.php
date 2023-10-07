@@ -26,14 +26,13 @@ class EpisodeCreationRequest extends FormRequest
     public function rules()
     {
         $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
-        //dd($this->file('audio-file')->getMimeType());
         return [
             'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
             'no' => 'numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
             'title',
             'description',
-            'characters' => 'array',
-            'tags' =>  'array',
+            'characters' => 'nullable|array',
+            'tags' =>  'nullable|array',
             'audio-file' => 'mimetypes:audio/mpeg',
         ];
     }

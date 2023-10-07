@@ -63,7 +63,7 @@ class PodcastsController extends Controller
         //
     }
 
-    public function retrievePodcastName($podcastId)
+    public static function retrievePodcastName($podcastId)
     {
         $podcastNames = ['chroniques-economiques', 'digitime', 'anbu-savana'];
         return $podcastNames[$podcastId - 1];

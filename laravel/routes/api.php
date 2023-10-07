@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\PodcastsController;
 
 /*
@@ -22,7 +23,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/account', [AuthController::class, 'getAccount'])->middleware('auth:sanctum');
+Route::apiResource('episodes', EpisodesController::class);
 Route::apiResource('podcasts', PodcastsController::class);
+
 
 Route::fallback(function () {
     return response()->json(['message' => 'Route not found'], 404);
