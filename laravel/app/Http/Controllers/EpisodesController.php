@@ -45,6 +45,8 @@ class EpisodesController extends Controller
     public function store(Request $request)
     {
         $filePathAndName = $this->getFilePathAndName($request->input('podcast_id'), $request->input('no'));
+        var_dump($filePathAndName);
+        die;
         Storage::putFileAs($filePathAndName['path'], $filePathAndName['name']);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
@@ -130,7 +132,7 @@ class EpisodesController extends Controller
     {
         $podcastName = PodcastsController::retrievePodcastName($podcastId);
         $filePath = 'audio/podcasts/' . $podcastName;
-        $fileName = $podcastName . '-' . $episodeNo;
+        $fileName = $podcastName . '-' . $episodeNo . '.mp3';
         return ['path' => $filePath, 'name' => $fileName];
     }
 }
