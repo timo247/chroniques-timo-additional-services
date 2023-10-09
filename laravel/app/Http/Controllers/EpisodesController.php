@@ -45,8 +45,8 @@ class EpisodesController extends Controller
     public function store(Request $request)
     {
         $filePathAndName = $this->getFilePathAndName($request->input('podcast_id'), $request->input('no'));
-        var_dump($filePathAndName);
-        die;
+        // var_dump($filePathAndName);
+        // die;
         Storage::putFileAs($filePathAndName['path'], $filePathAndName['name']);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
@@ -54,6 +54,7 @@ class EpisodesController extends Controller
         $episode->title = $request->input('title');
         $episode->description = $request->input('description');
         $episode->save();
+        return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
 
         //Ajouter les personnages affiliés à l'épisode
         $characters = Character::findOrFail($request->input('characters'));
@@ -61,7 +62,6 @@ class EpisodesController extends Controller
         //Ajouter les tags affiliés à l'épisode
         $existingTags = Tag::findOrFail($request->input('tags'));
         $episode->tags()->attach($request->input('tags'));
-        return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
     }
 
     public function show($id)
@@ -131,7 +131,7 @@ class EpisodesController extends Controller
     public function getFilePathAndName($podcastId, $episodeNo)
     {
         $podcastName = PodcastsController::retrievePodcastName($podcastId);
-        $filePath = 'audio/podcasts/' . $podcastName;
+        $filePath = storage_path('app/audio/podcasts/' . $podcastName);
         $fileName = $podcastName . '-' . $episodeNo . '.mp3';
         return ['path' => $filePath, 'name' => $fileName];
     }
