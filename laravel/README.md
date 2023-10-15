@@ -2,6 +2,8 @@
 
 PArtie authenticating de la resource laravel auth sanctum
 
+https://chat.openai.com/c/2c1c7f27-7157-428c-9006-2c25f197347d
+
 ## Rappel au momment du déploiement
 
 Modifier la valeur de la variable domain dans le fichier config/session.php

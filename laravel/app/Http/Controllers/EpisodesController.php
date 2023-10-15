@@ -47,7 +47,7 @@ class EpisodesController extends Controller
         $filePathAndName = $this->getFilePathAndName($request->input('podcast_id'), $request->input('no'));
         // var_dump($filePathAndName);
         // die;
-        Storage::putFileAs($filePathAndName['path'], $filePathAndName['name']);
+        Storage::putFileAs($filePathAndName['path'], $request->file('audio-file'), $filePathAndName['name']);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
         $episode->no = $request->input('no');
@@ -113,9 +113,6 @@ class EpisodesController extends Controller
         //
     }
 
-
-
-
     public static function possibleThemes()
     {
         $possibleThemes = Theme::get()->toArray();
@@ -131,7 +128,7 @@ class EpisodesController extends Controller
     public function getFilePathAndName($podcastId, $episodeNo)
     {
         $podcastName = PodcastsController::retrievePodcastName($podcastId);
-        $filePath = storage_path('app/audio/podcasts/' . $podcastName);
+        $filePath = 'app' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . 'podcasts' . DIRECTORY_SEPARATOR  . $podcastName;
         $fileName = $podcastName . '-' . $episodeNo . '.mp3';
         return ['path' => $filePath, 'name' => $fileName];
     }
