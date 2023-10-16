@@ -54,14 +54,25 @@ class EpisodesController extends Controller
         $episode->title = $request->input('title');
         $episode->description = $request->input('description');
         $episode->save();
-        return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
-
         //Ajouter les personnages affiliés à l'épisode
-        $characters = Character::findOrFail($request->input('characters'));
-        $episode->characters()->attach($request->input('characters'));
+        if ($request->input('characters') != null) {
+            try {
+                Character::findOrFail($request->input('characters'));
+                $episode->characters()->attach($request->input('characters'));
+            } catch (ModelNotFoundException $e) {
+                return response()->json(['message' => $e->getMessage()], 404); // Réponse d'erreur HTTP 404
+            }
+        }
         //Ajouter les tags affiliés à l'épisode
-        $existingTags = Tag::findOrFail($request->input('tags'));
-        $episode->tags()->attach($request->input('tags'));
+        if ($request->input('tags') != null) {
+            try {
+                Tag::findOrFail($request->input('tags'));
+                $episode->tags()->attach($request->input('tags'));
+            } catch (ModelNotFoundException $e) {
+                return response()->json(['message' => $e->getMessage()], 404); // Réponse d'erreur HTTP 404
+            }
+        }
+        return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
     }
 
     public function show($id)
@@ -128,7 +139,7 @@ class EpisodesController extends Controller
     public function getFilePathAndName($podcastId, $episodeNo)
     {
         $podcastName = PodcastsController::retrievePodcastName($podcastId);
-        $filePath = 'app' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . 'podcasts' . DIRECTORY_SEPARATOR  . $podcastName;
+        $filePath = 'audio' . DIRECTORY_SEPARATOR . 'podcasts' . DIRECTORY_SEPARATOR  . $podcastName;
         $fileName = $podcastName . '-' . $episodeNo . '.mp3';
         return ['path' => $filePath, 'name' => $fileName];
     }
