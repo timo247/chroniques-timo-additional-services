@@ -28,13 +28,13 @@ class EpisodeUpdateRequest extends FormRequest
         $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
         //dd($this->file('audio-file')->getMimeType());
         return [
-            'podcast_id' => 'nullable,numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
-            'no' => 'nullable,numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
+            'podcast_id' => 'nullable|numeric',
+            'no' => 'nullable|numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
             'title' => 'nullable',
             'description' => 'nullable',
-            'characters' => 'nulable,array',
-            'tags' =>  'nullable,array',
-            'audio-file' => 'nullable,mimetypes:audio/mpeg',
+            'characters' => 'nullable|array',
+            'tags' =>  'nullable|array',
+            'audio-file' => 'nullable|mimetypes:audio/mpeg',
         ];
     }
 }

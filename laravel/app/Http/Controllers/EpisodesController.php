@@ -45,8 +45,7 @@ class EpisodesController extends Controller
     public function store(EpisodeCreationRequest $request)
     {
         $filePathAndName = $this->getFilePathAndName($request->input('podcast_id'), $request->input('no'));
-        // var_dump($filePathAndName);
-        // die;
+        dd($request);
         Storage::putFileAs($filePathAndName['path'], $request->file('audio-file'), $filePathAndName['name']);
         $episode = new Episode();
         $episode->podcast_id = $request->input('podcast_id');
@@ -87,8 +86,9 @@ class EpisodesController extends Controller
 
     public function update(Request $request, $id)
     {
-        var_dump($request->input('title'));
-        die;
+        dd($request);
+        // var_dump($request);
+        // die;
         try {
             $episode = Episode::findOrFail($id);
         } catch (ModelNotFoundException $e) {
