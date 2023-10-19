@@ -1,6 +1,6 @@
 ## Next steps
 
-PArtie authenticating de la resource laravel auth sanctum
+Faire fonctionner le filtre EpsiodeUpdateRequest
 
 https://chat.openai.com/c/2c1c7f27-7157-428c-9006-2c25f197347d
 

@@ -84,7 +84,7 @@ class EpisodesController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(EpisodeUpdateRequest $request, $id)
     {
         dd($request);
         // var_dump($request);
