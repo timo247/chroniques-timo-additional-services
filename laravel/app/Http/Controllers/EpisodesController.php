@@ -86,15 +86,14 @@ class EpisodesController extends Controller
 
     public function update(EpisodeUpdateRequest $request, $id)
     {
-        dd($request);
-        // var_dump($request);
-        // die;
+        //dd($request);
         try {
             $episode = Episode::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404); // Réponse d'erreur HTTP 404
         }
         if ($request->filled('no')) {
+            $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
             $episode->no = $request->input('no');
         }
         if ($request->filled('title')) {
@@ -109,7 +108,7 @@ class EpisodesController extends Controller
             if (Storage::exists($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'])) {
                 Storage::delete($ancientPathAndName['path'] . '/' . $ancientPathAndName['name']);
             }
-            $newPathAndName = $this->getFilePathAndName($request->input('podcast_id'), $request->input('no'));
+            $newPathAndName = $this->getFilePathAndName($request->input('podcast_id'), $episode->no);
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
         $episode->save();
@@ -143,5 +142,14 @@ class EpisodesController extends Controller
         $filePath = 'audio' . DIRECTORY_SEPARATOR . 'podcasts' . DIRECTORY_SEPARATOR  . $podcastName;
         $fileName = $podcastName . '-' . $episodeNo . '.mp3';
         return ['path' => $filePath, 'name' => $fileName];
+    }
+
+    public function renameEpisodeFile($podcastId, $ancientNo, $newNo)
+    {
+        $ancientPathAndName = $this->getFilePathAndName($podcastId, $ancientNo);
+        $newPathAndName = $this->getFilePathAndName($podcastId, $newNo);
+        if (Storage::exists($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'])) {
+            Storage::move($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'], $newPathAndName['path'] . '/' . $newPathAndName['name']);
+        }
     }
 }

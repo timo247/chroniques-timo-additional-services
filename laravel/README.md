@@ -1,6 +1,9 @@
 ## Next steps
 
-Faire fonctionner le filtre EpsiodeUpdateRequest
+Add filepath to DB in episode_migrations
+
+Systématiser l'envoie de réponses http lors d'erreurs de validation selon le ticket:
+https://chat.openai.com/c/32e30120-9bdd-4072-b1b5-19d2c9b8fe73
 
 https://chat.openai.com/c/2c1c7f27-7157-428c-9006-2c25f197347d
 
