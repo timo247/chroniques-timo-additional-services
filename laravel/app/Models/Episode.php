@@ -16,7 +16,7 @@ class Episode extends Model
         "no",
         "title",
         "description",
-        "path",
+        "available",
         "tags",
         "characters"
     ];
