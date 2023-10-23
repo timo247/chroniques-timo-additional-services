@@ -1,6 +1,8 @@
 ## Next steps
 
-Add filepath to DB in episode_migrations
+Créer fonction backupEpisodeData, qui met les données d'un épisode existant au numéro différent du nouveau dans un espace dédié de la base de donnée (ex: -1 \* épisode courant et propriété active = false).
+
+Créer un mécanisme proposant dans ce cas-ci de réaffecter les anciennes données à un nouveau numéro
 
 Systématiser l'envoie de réponses http lors d'erreurs de validation selon le ticket:
 https://chat.openai.com/c/32e30120-9bdd-4072-b1b5-19d2c9b8fe73

@@ -8,7 +8,6 @@ use App\Models\Episode;
 use App\Models\Podcast;
 use App\Models\Character;
 use Illuminate\Http\Request;
-use App\Http\Requests\EpisodeRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\EpisodeUpdateRequest;
 use App\Http\Requests\EpisodeCreationRequest;
@@ -92,12 +91,16 @@ class EpisodesController extends Controller
         try {
             $episode = Episode::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => $e->getMessage()], 404); // Réponse d'erreur HTTP 404
+            return response()->json(['message' => $e->getMessage()], 404);
         }
         if ($request->filled('no')) {
+            $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
             if ($episode->no != $request->input('no')) {
-                if (Episode::where('no', '=', $request->input('no'))->get() != null) {
+                if ($existingEpisodes->count > 0) {
                     //appeler fonction qui backup data, fichier puis propose la réaffectation des données de l'épisode
+                    foreach ($existingEpisodes as $episode) {
+                        $episode->update(['no' => -$episode->no]);
+                    }
                     $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $request->input('no'));
                 }
                 $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
@@ -160,6 +163,7 @@ class EpisodesController extends Controller
             Storage::move($filePathAndName['path'] . '/' . $filePathAndName['name'], $filePathAndName['path'] . '/' . 'backup-' . $filePathAndName['name']);
         }
         //Si l'épisode avait un numéro existant, sauvegarder les données de l'épisode dans un fichier, puis supprimer l'élément de la base de données
+        $coreespondingEpisodes = Episode::where('no', '=', $no)->get()->toArray();
 
         //Envoyer une alerte pour signifier que deux épisodes ont le même numéro, et indiquer le chemin du fichier sauvegardé en backup
     }
