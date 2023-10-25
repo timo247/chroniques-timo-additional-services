@@ -50,8 +50,6 @@ class EpisodesController extends Controller
         $episode->no = $request->input('no');
         $episode->title = $request->input('title');
         $episode->description = $request->input('description');
-        $episode->file_url = $filePathAndName['path'];
-        $episode->file_name = $filePathAndName['name'];
         $episode->save();
         //Ajouter les personnages affiliés à l'épisode
         if ($request->input('characters') != null) {
@@ -94,9 +92,10 @@ class EpisodesController extends Controller
             return response()->json(['message' => $e->getMessage()], 404);
         }
         if ($request->filled('no')) {
-            $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
             if ($episode->no != $request->input('no')) {
+                $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
                 if ($existingEpisodes->count > 0) {
+                    dd($existingEpisodes);
                     //appeler fonction qui backup data, fichier puis propose la réaffectation des données de l'épisode
                     foreach ($existingEpisodes as $episode) {
                         $episode->update(['no' => -$episode->no]);
