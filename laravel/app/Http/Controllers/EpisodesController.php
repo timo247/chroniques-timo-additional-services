@@ -84,8 +84,6 @@ class EpisodesController extends Controller
 
     public function update(EpisodeUpdateRequest $request, $id)
     {
-        //Caution, if user updates an episode number for an already existing episode, ancient episode file will be deleted.
-        //dd($request);
         try {
             $episode = Episode::findOrFail($id);
         } catch (ModelNotFoundException $e) {
@@ -95,9 +93,8 @@ class EpisodesController extends Controller
             if ($episode->no != $request->input('no')) {
                 $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
                 if ($existingEpisodes->count() > 0) {
-                    //changes episodes data to negative to each having currently no file attached
                     foreach ($existingEpisodes as $existingEpisode) {
-                        $existingEpisodes->update(['no' => -$existingEpisode->no]);
+                        $existingEpisode->update(['no' => -$existingEpisode->no]);
                     }
                     $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $request->input('no'));
                 }
@@ -121,11 +118,8 @@ class EpisodesController extends Controller
             $newPathAndName = $this->getFilePathAndName($request->input('podcast_id'), $episode->no);
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
+        // Tag Update management
         $episode->save();
-        dump($existingEpisodes->toArray(), $episode->toArray());
-
-        // Vous pouvez également ajouter ici la logique pour mettre à jour les personnages et les tags affiliés à l'épisode si nécessaire.
-
         // Rediriger l'utilisateur ou retourner une réponse appropriée
         return response()->json(['message' => 'episode updated successfully', 'episode' => $episode], 404);
     }
@@ -159,8 +153,6 @@ class EpisodesController extends Controller
     public function backupUpdatedEpisodeFile($podcastId, $no)
     {
         $filePathAndName = $this->getFilePathAndName($podcastId, $no);
-        dump($filePathAndName);
-        die;
         if (Storage::exists($filePathAndName['path'] . '/' . $filePathAndName['name'])) {
             Storage::move($filePathAndName['path'] . '/' . $filePathAndName['name'], $filePathAndName['path'] . '/' . 'backup-' . $filePathAndName['name']);
         }
