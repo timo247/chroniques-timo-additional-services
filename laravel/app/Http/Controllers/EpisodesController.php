@@ -94,16 +94,16 @@ class EpisodesController extends Controller
         if ($request->filled('no')) {
             if ($episode->no != $request->input('no')) {
                 $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
-                if ($existingEpisodes->count > 0) {
-                    dd($existingEpisodes);
-                    //appeler fonction qui backup data, fichier puis propose la réaffectation des données de l'épisode
-                    foreach ($existingEpisodes as $episode) {
-                        $episode->update(['no' => -$episode->no]);
+                if ($existingEpisodes->count() > 0) {
+                    //changes episodes data to negative to each having currently no file attached
+                    foreach ($existingEpisodes as $existingEpisode) {
+                        $existingEpisodes->update(['no' => -$existingEpisode->no]);
                     }
                     $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $request->input('no'));
                 }
                 $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
                 $episode->no = $request->input('no');
+                //dd($existingEpisodes, $episode);
             }
         }
         if ($request->filled('title')) {
@@ -122,6 +122,7 @@ class EpisodesController extends Controller
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
         $episode->save();
+        dump($existingEpisodes->toArray(), $episode->toArray());
 
         // Vous pouvez également ajouter ici la logique pour mettre à jour les personnages et les tags affiliés à l'épisode si nécessaire.
 
@@ -158,6 +159,8 @@ class EpisodesController extends Controller
     public function backupUpdatedEpisodeFile($podcastId, $no)
     {
         $filePathAndName = $this->getFilePathAndName($podcastId, $no);
+        dump($filePathAndName);
+        die;
         if (Storage::exists($filePathAndName['path'] . '/' . $filePathAndName['name'])) {
             Storage::move($filePathAndName['path'] . '/' . $filePathAndName['name'], $filePathAndName['path'] . '/' . 'backup-' . $filePathAndName['name']);
         }
