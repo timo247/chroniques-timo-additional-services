@@ -62,11 +62,13 @@ class EpisodesController extends Controller
         }
         //Ajouter les tags affiliés à l'épisode
         if ($request->input('tags') != null) {
-            try {
-                Tag::findOrFail($request->input('tags'));
-                $episode->tags()->attach($request->input('tags'));
-            } catch (ModelNotFoundException $e) {
-                return response()->json(['message' => $e->getMessage()], 404); // Réponse d'erreur HTTP 404
+            foreach ($request->input('tags') as $tag) {
+                $existingTag = Tag::where('name', '=', $tag)->first();
+                if ($existingTag) {
+                    $episode->tags()->attach($existingTag);
+                } else {
+                    return response()->json(['message' => "tag " . $tag . "does not exist"], 404); // Réponse d'erreur HTTP 404
+                }
             }
         }
         return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
