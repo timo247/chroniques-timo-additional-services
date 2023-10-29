@@ -63,11 +63,11 @@ class EpisodesController extends Controller
         //Ajouter les tags affiliés à l'épisode
         if ($request->input('tags') != null) {
             foreach ($request->input('tags') as $tag) {
-                $existingTag = Tag::where('name', '=', $tag)->first();
+                $existingTag = Tag::where('id', '=', $tag)->first();
                 if ($existingTag) {
                     $episode->tags()->attach($existingTag);
                 } else {
-                    return response()->json(['message' => "tag " . $tag . "does not exist"], 404); // Réponse d'erreur HTTP 404
+                    return response()->json(['message' => "tag id" . $tag . "is not registered DB"], 404); // Réponse d'erreur HTTP 404
                 }
             }
         }
