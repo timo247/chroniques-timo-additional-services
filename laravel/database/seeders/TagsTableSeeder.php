@@ -50,7 +50,7 @@ class TagsTableSeeder extends Seeder
         foreach ($themes as $theme) {
             $lowCaseTheme =  mb_strtolower($theme, 'UTF-8');
 
-            // Remplacer les caractères spéciaux avec accent
+            // Replace special chars for value column 
             $cleanedCaseTheme = str_replace(
                 array('à', 'á', 'â', 'ä', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'ö', 'ù', 'ú', 'û', 'ü'),
                 array('a', 'a', 'a', 'a', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u'),
