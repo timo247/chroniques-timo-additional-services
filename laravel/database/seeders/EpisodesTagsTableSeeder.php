@@ -18,7 +18,7 @@ class EpisodesTagsTableSeeder extends Seeder
         $tagId = 1;
         foreach ($episodes as $episode) {
             for ($i = $tagId; $i < $tagId + 3; $i++) {
-                $episode->tags()->attach($i + 1);
+                $episode->tags()->attach($i);
             }
             $tagId += 3;
         }
