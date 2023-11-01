@@ -1,6 +1,6 @@
 ## Next steps
 
-Finish tag existance verification via requests. Help available here: https://chat.openai.com/c/970d98ff-315b-41cb-926c-bd8ae2e9dfab
+Keep testing episode update. : https://chat.openai.com/c/970d98ff-315b-41cb-926c-bd8ae2e9dfab
 
 Systématiser l'envoie de réponses http lors d'erreurs de validation selon le ticket:
 https://chat.openai.com/c/32e30120-9bdd-4072-b1b5-19d2c9b8fe73
