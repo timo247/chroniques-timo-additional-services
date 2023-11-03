@@ -60,15 +60,10 @@ class EpisodesController extends Controller
                 return response()->json(['message' => $e->getMessage()], 404); // Réponse d'erreur HTTP 404
             }
         }
-        //Ajouter les tags affiliés à l'épisode
         if ($request->input('tags') != null) {
             foreach ($request->input('tags') as $tag) {
-                $existingTag = Tag::where('id', '=', $tag)->first();
-                if ($existingTag) {
-                    $episode->tags()->attach($existingTag);
-                } else {
-                    return response()->json(['message' => "tag id" . $tag . "is not registered DB"], 404); // Réponse d'erreur HTTP 404
-                }
+                $tagModel = Tag::where('id', '=', $tag)->first();
+                $episode->tags()->attach($tagModel);
             }
         }
         return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
@@ -121,6 +116,18 @@ class EpisodesController extends Controller
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
         // Tag Update management
+        if ($request->input('tags') != null) {
+            $affiliatedTags = $episode->tags();
+            foreach ($affiliatedTags as $affiliatedTag) {
+                $episode->tags()->detach($affiliatedTag->id);
+            }
+            foreach ($request->input('tags') as $tag) {
+                if (!$episode->tags()->where('id', $tag)->exists()) {
+                    $tagModel = Tag::where('id', '=', $tag)->first();
+                    $episode->tags()->attach($tagModel);
+                }
+            }
+        }
         $episode->save();
         // Rediriger l'utilisateur ou retourner une réponse appropriée
         return response()->json(['message' => 'episode updated successfully', 'episode' => $episode], 404);
