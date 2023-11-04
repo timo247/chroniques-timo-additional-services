@@ -86,20 +86,11 @@ class EpisodesController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }
+
         if ($request->filled('no')) {
-            if ($episode->no != $request->input('no')) {
-                $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
-                if ($existingEpisodes->count() > 0) {
-                    foreach ($existingEpisodes as $existingEpisode) {
-                        $existingEpisode->update(['no' => -$existingEpisode->no]);
-                    }
-                    $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $request->input('no'));
-                }
-                $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
-                $episode->no = $request->input('no');
-                //dd($existingEpisodes, $episode);
-            }
+            $this->handleNoChange($episode, $request);
         }
+
         if ($request->filled('title')) {
             $episode->title = $request->input('title');
         }
@@ -115,18 +106,9 @@ class EpisodesController extends Controller
             $newPathAndName = $this->getFilePathAndName($request->input('podcast_id'), $episode->no);
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
-        // Tag Update management
+
         if ($request->input('tags') != null) {
-            $affiliatedTags = $episode->tags();
-            foreach ($affiliatedTags as $affiliatedTag) {
-                $episode->tags()->detach($affiliatedTag->id);
-            }
-            foreach ($request->input('tags') as $tag) {
-                if (!$episode->tags()->where('id', $tag)->exists()) {
-                    $tagModel = Tag::where('id', '=', $tag)->first();
-                    $episode->tags()->attach($tagModel);
-                }
-            }
+            $this->handleTagsChange($episode, $request);
         }
         $episode->save();
         // Rediriger l'utilisateur ou retourner une réponse appropriée
@@ -165,10 +147,6 @@ class EpisodesController extends Controller
         if (Storage::exists($filePathAndName['path'] . '/' . $filePathAndName['name'])) {
             Storage::move($filePathAndName['path'] . '/' . $filePathAndName['name'], $filePathAndName['path'] . '/' . 'backup-' . $filePathAndName['name']);
         }
-        //Si l'épisode avait un numéro existant, sauvegarder les données de l'épisode dans un fichier, puis supprimer l'élément de la base de données
-        $coreespondingEpisodes = Episode::where('no', '=', $no)->get()->toArray();
-
-        //Envoyer une alerte pour signifier que deux épisodes ont le même numéro, et indiquer le chemin du fichier sauvegardé en backup
     }
 
     public function renameEpisodeFile($podcastId, $ancientNo, $newNo)
@@ -177,6 +155,34 @@ class EpisodesController extends Controller
         $newPathAndName = $this->getFilePathAndName($podcastId, $newNo);
         if (Storage::exists($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'])) {
             Storage::move($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'], $newPathAndName['path'] . '/' . $newPathAndName['name']);
+        }
+    }
+
+    public function handleNoChange($episode, $request)
+    {
+        if ($episode->no != $request->input('no')) {
+            $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
+            if ($existingEpisodes->count() > 0) {
+                foreach ($existingEpisodes as $existingEpisode) {
+                    $existingEpisode->update(['no' => -$existingEpisode->no]);
+                }
+                $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $request->input('no'));
+            }
+            $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
+            $episode->no = $request->input('no');
+            //dd($existingEpisodes, $episode);
+        }
+    }
+
+    public function handleTagsChange($episode, $request)
+    {
+        $affiliatedTags = $episode->tags()->get();
+        foreach ($affiliatedTags as $affiliatedTag) {
+            $episode->tags()->detach($affiliatedTag);
+        }
+        foreach ($request->input('tags') as $tag) {
+            $tagModel = Tag::where('id', '=', $tag)->first();
+            $episode->tags()->attach($tagModel);
         }
     }
 }
