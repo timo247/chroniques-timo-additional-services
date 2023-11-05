@@ -81,6 +81,8 @@ class EpisodesController extends Controller
 
     public function update(EpisodeUpdateRequest $request, $id)
     {
+        $cautionMessage = "nil";
+
         try {
             $episode = Episode::findOrFail($id);
         } catch (ModelNotFoundException $e) {
@@ -89,6 +91,7 @@ class EpisodesController extends Controller
 
         if ($request->filled('no')) {
             $this->handleNoChange($episode, $request);
+            $cautionMessage = "Potential existing episode updated with number " . $request->input('no') . 'Check on database for \'- number\' if some episode data is now affected to no episode file (eg. -41 for episode 41)';
         }
 
         if ($request->filled('title')) {
@@ -112,7 +115,7 @@ class EpisodesController extends Controller
         }
         $episode->save();
         // Rediriger l'utilisateur ou retourner une réponse appropriée
-        return response()->json(['message' => 'episode updated successfully', 'episode' => $episode], 404);
+        return response()->json(['message' => 'episode updated successfully', 'episode' => $episode, "caution" => $cautionMessage], 404);
     }
 
     public function destroy($id)
@@ -170,7 +173,6 @@ class EpisodesController extends Controller
             }
             $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
             $episode->no = $request->input('no');
-            //dd($existingEpisodes, $episode);
         }
     }
 
