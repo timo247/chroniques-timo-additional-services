@@ -46,4 +46,16 @@ class BaseController extends Controller
 
         return response()->json($response, $code);
     }
+
+    //transform model to string readable by human
+    public  static function modelToReadableString($model)
+    {
+        $attributes = $model->getAttributes();
+        $attributesAsString = '{';
+        foreach ($attributes as $key => $value) {
+            $attributesAsString .= ucfirst(str_replace('_', ' ', $key)) . ': ' . $value . "\n";
+        }
+        $attributesAsString .= '}';
+        return $attributesAsString;
+    }
 }
