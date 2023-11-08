@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EpisodesController extends Controller
 {
+    //Return a specific episode if id is specified, all episodes of one podcast if serial id is specified or all episodes if none is specified
     public function index(Request $request)
     {
         if ($request->input('episode_id') == null) {
@@ -83,24 +84,20 @@ class EpisodesController extends Controller
     public function update(EpisodeUpdateRequest $request, $id)
     {
         $cautionMessage = "false";
-
         try {
             $episode = Episode::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }
-
         if ($request->filled('no')) {
             $cautionMessage = $this->handleEpisodeNoInput($episode, $request);
         }
-
         if ($request->filled('title')) {
             $episode->title = $request->input('title');
         }
         if ($request->filled('description')) {
             $episode->description = $request->input('description');
         }
-
         if ($request->hasFile('audio-file')) {
             $ancientPathAndName = $this->getFilePathAndName($episode->podcast_id, $episode->no);
             if (Storage::exists($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'])) {
@@ -109,18 +106,22 @@ class EpisodesController extends Controller
             $newPathAndName = $this->getFilePathAndName($request->input('podcast_id'), $episode->no);
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
-
         if ($request->input('tags') != null) {
             $this->handleTagsChange($episode, $request);
         }
         $episode->save();
-        // Rediriger l'utilisateur ou retourner une réponse appropriée
         return response()->json(['message' => 'episode updated successfully', 'episode' => $episode, "warning" => $cautionMessage], 404);
     }
 
     public function destroy($id)
     {
-        //
+        try {
+            $episode = Episode::findOrFail($id);
+            $episode->delete();
+            return response()->json(['message' => 'Episode with id = ' . $id . ' deleted successfully.'], 404);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], 404);
+        }
     }
 
     public static function possibleThemes()

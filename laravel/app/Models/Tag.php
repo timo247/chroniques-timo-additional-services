@@ -16,7 +16,7 @@ class Tag extends Model
     ];
 
     public static $rules = [
-        'name' => 'required|string|regex:/^[a-z\-]+$/|unique:tags', // Utilisation d'une expression régulière pour les lettres minuscules et les tirets
+        'name' => 'required|string|regex:/^[a-z\-]+$/|unique:tags', // Only regular chars, minuscules and '-'
     ];
 
     public function episodes()

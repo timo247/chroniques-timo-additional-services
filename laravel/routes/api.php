@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TagsController;
 use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\PodcastsController;
 
@@ -25,6 +26,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/account', [AuthController::class, 'getAccount'])->middleware('auth:sanctum');
 Route::apiResource('episodes', EpisodesController::class);
 Route::apiResource('podcasts', PodcastsController::class);
+Route::apiResource('tags', TagsController::class);
 
 
 Route::fallback(function () {
