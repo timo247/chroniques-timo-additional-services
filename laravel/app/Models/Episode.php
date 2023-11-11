@@ -42,4 +42,9 @@ class Episode extends Model
         return $this->belongsToMany(Character::class, 'character_episode', 'episode_id', 'character_id')
             ->withTimestamps();
     }
+
+    public function userPlays()
+    {
+        return $this->belongsToMany(User::class, 'plays')->withTimestamps();
+    }
 }

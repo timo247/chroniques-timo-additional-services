@@ -47,4 +47,9 @@ class User extends Authenticatable
     { // NOUVEAU !!!!!!!!
         return $this->hasMany(Article::class); // Relation (1:)N
     }
+
+    public function plays()
+    {
+        return $this->belongsToMany(Episode::class, 'plays')->withTimestamps();
+    }
 }
