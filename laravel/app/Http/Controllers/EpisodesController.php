@@ -8,12 +8,14 @@ use App\Models\Episode;
 use App\Models\Podcast;
 use App\Models\Character;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\EpisodeUpdateRequest;
 use App\Http\Requests\EpisodeCreationRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+use function PHPUnit\Framework\isEmpty;
 
 class EpisodesController extends Controller
 {
@@ -68,7 +70,7 @@ class EpisodesController extends Controller
                 $episode->tags()->attach($tagModel);
             }
         }
-        return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 404);
+        return response()->json(['message' => 'episode created successfully', 'episode' => $episode], 201);
     }
 
     public function show($id)
@@ -118,10 +120,22 @@ class EpisodesController extends Controller
         try {
             $episode = Episode::findOrFail($id);
             $episode->delete();
-            return response()->json(['message' => 'Episode with id = ' . $id . ' deleted successfully.'], 404);
+            return response()->json(['message' => 'Episode with id = ' . $id . ' deleted successfully.'], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }
+    }
+
+    public function getPlays()
+    {
+        $plays = DB::table('plays')->get()->toArray();
+        return response()->json(['message' => 'plays retrieved successfully', 'data' => $plays], 200);
+    }
+
+    public function getUserPlays($userId)
+    {
+        $plays = DB::table('plays')->where('user_id', '=', $userId)->get()->toArray();
+        return response()->json(['message' => 'user with id = ' . $userId . ' plays retrieved successfully', 'data' => $plays], 200);
     }
 
     public static function possibleThemes()

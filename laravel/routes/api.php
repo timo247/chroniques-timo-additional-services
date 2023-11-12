@@ -27,6 +27,8 @@ Route::post('/account', [AuthController::class, 'getAccount'])->middleware('auth
 Route::apiResource('episodes', EpisodesController::class);
 Route::apiResource('podcasts', PodcastsController::class);
 Route::apiResource('tags', TagsController::class);
+Route::get('plays', [EpisodesController::class, 'getPlays']);
+Route::get('plays/{userId}', [EpisodesController::class, 'getUserPlays']);
 
 
 Route::fallback(function () {
