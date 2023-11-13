@@ -138,6 +138,23 @@ class EpisodesController extends Controller
         return response()->json(['message' => 'user with id = ' . $userId . ' plays retrieved successfully', 'data' => $plays], 200);
     }
 
+    public function addEpisodePlay(Request $request, $episodeId)
+    {
+        $play = DB::table('plays')->where('user_id', '=', $request->user()->id)->where('episode_id', '=', $episodeId)->get()->toArray();
+        if (!isEmpty($play)) {
+            $nbPlays = $play['nb_plays'];
+            DB::table('plays')->where('user_id', '=', $request->user()->id)->where('episode_id', '=', $episodeId)->update(['nb_plays' => $nbPlays + 1]);
+            return response()->json(['message' => 'play for user with id = ' . $request->user()->id . ' with episode with id = ' . $episodeId . ' updated successfully', 'data' => $play], 200);
+        }
+
+        $newPlay = DB::table('plays')->insert([
+            'episode_id' => $episodeId,
+            'user_id' => $request->user()->id,
+            'nb_plays' => 1
+        ]);
+        return response()->json(['message' => 'play for user with id = ' . $request->user()->id . ' with episode with id = ' . $episodeId . ' created successfully', 'data' => $play], 200);
+    }
+
     public static function possibleThemes()
     {
         $possibleThemes = Theme::get()->toArray();

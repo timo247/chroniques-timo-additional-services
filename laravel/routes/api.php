@@ -29,6 +29,7 @@ Route::apiResource('podcasts', PodcastsController::class);
 Route::apiResource('tags', TagsController::class);
 Route::get('plays', [EpisodesController::class, 'getPlays']);
 Route::get('plays/{userId}', [EpisodesController::class, 'getUserPlays']);
+Route::post('plays/{episodeId}', [EpisodesController::class, 'addEpisodePlay']);
 
 
 Route::fallback(function () {

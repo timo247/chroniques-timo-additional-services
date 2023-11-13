@@ -1,6 +1,6 @@
 ## Next steps
 
-tenter la création de plays depuis des requêtes postman
+tenter la création et récupération de plays depuis des requêtes postman
 
 ## Rappel au momment du déploiement
 
