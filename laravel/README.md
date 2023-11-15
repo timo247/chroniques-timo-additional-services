@@ -1,6 +1,18 @@
 ## Next steps
 
-tenter la création et récupération de plays depuis des requêtes postman
+1. Tenter la création et récupération de plays depuis des requêtes postman
+
+2. Ajouter une colonne spotify_uri aux épidodes
+
+3. Tenter de lire un épisode à l'aide du iframe spotify (cf stratégie sur drive)
+
+4. Retrouver la liste des épisodes URIs et seeder la base de données
+
+5. Créer la vue d'administration permettant d'affilier des tags aux épisodes et de les prévisualiser (les lire) à l'aide d'Irame pour s'assurer de la véracité du lien.
+
+6. Migrer la BDD vers MySQL
+
+7. Déployer l'app, et remplir progressivement l'affiliation des thèmes dans la base de données à l'aide de l'interface
 
 ## Rappel au momment du déploiement
 
