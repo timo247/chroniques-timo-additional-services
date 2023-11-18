@@ -18,7 +18,8 @@ class Episode extends Model
         "description",
         "available",
         "tags",
-        "characters"
+        "characters",
+        "shopify_uri"
     ];
 
     public function podcast()
