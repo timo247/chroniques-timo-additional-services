@@ -1,8 +1,8 @@
 ## Next steps
 
-1. Tenter la création et récupération de plays depuis des requêtes postman
+2. Ajouter une colonne spotify_uri aux épidodes: https://developer.spotify.com/documentation/embeds/tutorials/using-the-iframe-api
 
-2. Ajouter une colonne spotify_uri aux épidodes
+https://developer.spotify.com/documentation/web-api/concepts/spotify-uris-ids
 
 3. Tenter de lire un épisode à l'aide du iframe spotify (cf stratégie sur drive)
 
