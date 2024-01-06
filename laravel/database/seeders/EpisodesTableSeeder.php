@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\BaseController;
+use App\Models\Tag;
+use App\Models\Episode;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -58,31 +61,49 @@ class EpisodesTableSeeder extends Seeder
         //         'description' => 'random description',
         //     ]);
         // }
-        DB::table('episodes')->insert([
-            "podcast_id" => 1,
-            "no" => -41,
-            "title" => "Title 1",
-            "description" => "test",
-            "created_at" => "2023-10-16T18:30:59.000000Z",
-            "updated_at" => "2023-10-26T15:43:04.000000Z",
-        ]);
 
-        DB::table('episodes')->insert([
-            "podcast_id" => 1,
-            "no" => -41,
-            "title" => "Title 2",
-            "description" => "test",
-            "created_at" => "2023-10-17T11:51:59.000000Z",
-            "updated_at" => "2023-10-26T15:43:04.000000Z",
+        $ep = Episode::create([
+            "podcast_id" => 3,
+            "no" => 303,
+            "title" => "Le contexte dans lequel on s'exprime",
+            "spotify_uri" => "0Hv0HTxBu70NPnEGQgenEP",
+            "description" => "test"
         ]);
+        $this->manageTagCreationAndAttachment(['communication', 'interprétation'], $ep);
 
-        DB::table('episodes')->insert([
-            "podcast_id" => 1,
-            "no" => 41,
-            "title" => "Title 3",
-            "description" => "test42",
-            "created_at" => "2023-10-26T15:42:31.000000Z",
-            "updated_at" => "2023-10-26T15:43:04.000000Z",
+        $ep = Episode::create([
+            "podcast_id" => 3,
+            "no" => 302,
+            "title" => "Détruire la nature par l'action humaine",
+            "spotify_uri" => "7MdwFbMrjrGLZCd1QFJu9c",
+            "description" => "test"
         ]);
+        $this->manageTagCreationAndAttachment(['nature', 'communication'], $ep);
+
+        $ep = Episode::create([
+            "podcast_id" => 3,
+            "no" => 301,
+            "title" => "Le courage d'entreprendre",
+            "spotify_uri" => "7aYypJ3cz4oQNMlzGnt0qK",
+            "description" => "test"
+        ]);
+        $this->manageTagCreationAndAttachment(['adaptation', 'courage'], $ep);
+
+        $ep = Episode::create([
+            "podcast_id" => 3,
+            "no" => 300,
+            "title" => "Ce qu'il faut faire face à l'impermanence",
+            "spotify_uri" => "4bF1ft92LFvtzLaWcDHYUo",
+            "description" => "test"
+        ]);
+        $this->manageTagCreationAndAttachment(['générosité', 'constance'], $ep);
+    }
+
+    public function manageTagCreationAndAttachment($tagValues, $episode)
+    {
+        foreach ($tagValues as $tagValue) {
+            $tag = Tag::firstOrCreate(['value' => $tagValue], ['name' => BaseController::cleanCaseString($tagValue)]);
+            $episode->tags()->attach($tag->id);
+        }
     }
 }

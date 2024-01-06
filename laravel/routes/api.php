@@ -30,7 +30,8 @@ Route::apiResource('tags', TagsController::class);
 Route::get('plays', [EpisodesController::class, 'getPlays']);
 Route::get('plays/{userId}', [EpisodesController::class, 'getUserPlays']);
 Route::post('plays', [EpisodesController::class, 'addEpisodePlay'])->middleware('auth:sanctum');
-
+//Route::post('episodes/json-create', [EpisodesController::class, 'storeEpisodeFromJson'])->middleware('auth:sanctum'); temporarily commented because no internet when deved
+Route::post('episodes/json-create', [EpisodesController::class, 'storeEpisodeFromJson']);
 
 Route::fallback(function () {
     return response()->json(['message' => 'Route not found'], 404);

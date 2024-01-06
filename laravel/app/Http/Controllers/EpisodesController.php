@@ -4,19 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use App\Models\Play;
-use App\Models\Theme;
 use App\Models\Episode;
 use App\Models\Podcast;
 use App\Models\Character;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\EpisodeUpdateRequest;
 
+use App\Http\Requests\EpisodeUpdateRequest;
 use App\Http\Requests\AddEpisodePlayRequest;
 use App\Http\Requests\EpisodeCreationRequest;
+use Illuminate\Console\View\Components\Error;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EpisodesController extends Controller
@@ -160,7 +161,7 @@ class EpisodesController extends Controller
 
     public static function possibleThemes()
     {
-        $possibleThemes = Theme::get()->toArray();
+        $possibleThemes = Tag::get()->toArray();
         return $possibleThemes;
     }
 
@@ -238,5 +239,37 @@ class EpisodesController extends Controller
             $tagModel = Tag::where('id', '=', $tag)->first();
             $episode->tags()->attach($tagModel);
         }
+    }
+
+
+    // public function storeEpisodeFromJson(Request $request)
+    // {
+    //     $data = $request->json()->all();
+    //     foreach ($data as $episodeData) {
+    //         $episode = new Episode;
+    //         $episode->no = $episodeData["no"];
+    //         $episode->spotify_uri = $episodeData["spotify_uri"];
+    //         $episode->title = $episodeData["title"];
+    //         $episode->description = $episodeData["description"];
+
+    //     }
+    //     var_dump($episode);
+    // }
+
+    public function adminIndex()
+    {
+        $episodes = Episode::with('tags')
+            ->orderBy('updated_at')
+            ->paginate(10);
+        $links = $episodes->render();
+        return view('/episodes/view_list_episodes', compact('episodes', 'links'));
+    }
+
+    public function adminSingleEpisodeIndex($id)
+    {
+        $episode = Episode::with('tags')
+            ->where('id', '=', $id)
+            ->firstOrFail();
+        return view('/episodes/view_display_episode')->with('episode', $episode);
     }
 }

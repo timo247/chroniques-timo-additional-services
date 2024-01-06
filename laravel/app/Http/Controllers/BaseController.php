@@ -58,4 +58,14 @@ class BaseController extends Controller
         $attributesAsString .= '}';
         return $attributesAsString;
     }
+
+    public static function cleanCaseString($str)
+    {
+        $cleanedCaseString = str_replace(
+            array('à', 'á', 'â', 'ä', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'ö', 'ù', 'ú', 'û', 'ü'),
+            array('a', 'a', 'a', 'a', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u'),
+            $str
+        );
+        return $cleanedCaseString;
+    }
 }

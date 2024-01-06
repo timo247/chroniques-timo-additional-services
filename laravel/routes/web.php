@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\PodcastsController;
+use App\Http\Controllers\EpisodesController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +21,10 @@ Route::get('/', function () {
 });
 
 // Route::resource('articles', ArticleController::class, ['except' => ['show', 'edit', 'update']]);
-// Route::resource('podcasts', PodcastsController::class, ['only' => ['index', 'create', 'store']]);
+Route::get('/episodes', [EpisodesController::class, 'adminIndex'])->name('episodes.adminIndex');
+Route::get('episodes/create', [EpisodesController::class, 'create'])->name('episodes.adminCreate');
+Route::get('/episodes/{id}', [EpisodesController::class, 'adminSingleEpisodeIndex'])->name('episodes.adminSingleEpisodeIndex');
+
 
 
 //Auth::routes();

@@ -1,6 +1,6 @@
 @extends('template')
 
-@section('contenu')
+@section('content')
     <BR>
     <div class="col-sm-offset-3 col-sm-6">
         <div class="panel panel-info">

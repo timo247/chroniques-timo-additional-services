@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('no');
             $table->string('title');
             $table->string('description');
-            $table->string('shopify_uri');
+            $table->string('spotify_uri');
             $table->foreign('podcast_id')->references('id')->on('podcasts')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(["id", "podcast_id"]);
             $table->timestamps();
