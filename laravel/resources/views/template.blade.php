@@ -12,6 +12,7 @@
     <link media="all" type="text/css" rel="stylesheet"
         href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstraptheme.
 min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         textarea {
             resize: none
