@@ -2,6 +2,9 @@
 
 ## Ajouter à la vue de création des épisodes la fonctionnalité d'insertion dynamique de thèmes.
 
+-> Créer une list dynamique blade de spans avec les tags existants, et le fetcher avec le js
+-> Vérifier les tags nouvellement créés
+
 ## Ajouter créer la vue update episode, et ajouter les liens permettant de s'y rendre depuis episode list et episode single display.
 
 2. Ajouter une colonne spotify_uri aux épidodes: https://developer.spotify.com/documentation/embeds/tutorials/using-the-iframe-api
