@@ -2,7 +2,7 @@
 
 ## Ajouter à la vue de création des épisodes la fonctionnalité d'insertion dynamique de thèmes.
 
--> Créer une list dynamique blade de spans avec les tags existants, et le fetcher avec le js
+-> Mettre le form d'ajout de tag dans une div sans form et la monter
 -> Vérifier les tags nouvellement créés
 
 ## Ajouter créer la vue update episode, et ajouter les liens permettant de s'y rendre depuis episode list et episode single display.

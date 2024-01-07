@@ -63,8 +63,8 @@
                                 </div>
                             </div>
                             <!-- <div class="col col-10 col-sm-8 col-md-4 position-absolute bottom-0 start-0 ">
-                                                                                    <div id="tagSuggestionsBottomBorder" class="suggestionsBorder d-*-none border"></div>
-                                                                                </div> -->
+                                                                                            <div id="tagSuggestionsBottomBorder" class="suggestionsBorder d-*-none border"></div>
+                                                                                        </div> -->
                         </div>
                         <div class="row">
                             <div class="col col-10 col-sm-8 col-md-4">
@@ -92,6 +92,8 @@
     </div>
     <script>
         /* Gérer l'ajout de tags par enter et ajouter un bouton pour ajouter les tags*/
+        let fetchedTags = {!! json_encode($possibleThemes) !!};
+        console.log('fetchedTags', fetchedTags)
         const existingTags = ['Justice',
             'Gloire',
             'Pouvoir',
