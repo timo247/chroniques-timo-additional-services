@@ -57,6 +57,7 @@ class EpisodesController extends Controller
         $episode->no = $request->input('no');
         $episode->title = $request->input('title');
         $episode->description = $request->input('description');
+        $episode->spotify_uri = $request->input('spotify_uri');
         $episode->save();
         //Ajouter les personnages affiliés à l'épisode
         if ($request->input('characters') != null) {
@@ -69,7 +70,7 @@ class EpisodesController extends Controller
         }
         if ($request->input('tags') != null) {
             foreach ($request->input('tags') as $tag) {
-                $tagModel = Tag::where('id', '=', $tag)->first();
+                $tagModel = Tag::firstOrCreate(['value' => $tag], ['name' => BaseController::cleanCaseString($tag)]);
                 $episode->tags()->attach($tagModel);
             }
         }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ExistingTags;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\PodcastsController;
 
@@ -33,7 +31,7 @@ class EpisodeCreationRequest extends FormRequest
             'title' => 'required',
             'description' => 'nullable',
             'characters' => 'nullable|array',
-            'tags' => 'nullable|array|exists:tags,id',
+            'tags' => 'nullable|array',
             'audio-file' => 'required|mimetypes:audio/mpeg',
             'spotify_uri' => 'required|alpha'
         ];

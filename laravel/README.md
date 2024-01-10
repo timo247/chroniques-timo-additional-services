@@ -1,5 +1,7 @@
 ## Next steps
 
+Gérer la création de tag via la création d'épisodes coté backend
+
 ## Ajouter à la vue de création des épisodes la fonctionnalité d'insertion dynamique de thèmes.
 
 -> Mettre le form d'ajout de tag dans une div sans form et la monter
@@ -28,6 +30,8 @@ https://developer.spotify.com/documentation/web-api/concepts/spotify-uris-ids
 Modifier la valeur de la variable domain dans le fichier config/session.php
 https://laravel.com/docs/10.x/sanctum#spa-configuration
 https://www.youtube.com/watch?v=ajUST-jUMeg
+
+Mettre .env dans gitignore et tous les seeders comportant des données sensibles
 
 ## Idéees pour la suite
 
