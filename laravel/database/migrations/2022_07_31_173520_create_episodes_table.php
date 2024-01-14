@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->integer('no');
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('spotify_uri');
             $table->foreign('podcast_id')->references('id')->on('podcasts')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(["id", "podcast_id"]);

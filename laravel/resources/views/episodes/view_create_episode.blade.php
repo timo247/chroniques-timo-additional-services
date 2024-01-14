@@ -231,6 +231,8 @@
                 input.setAttribute('type', 'checkbox')
                 input.classList.add(`input-${tag}`)
                 input.setAttribute('value', tag)
+                input.setAttribute('name', 'tags[]')
+                input.checked = true
                 inputsGroup.appendChild(input)
             }
 
