@@ -1,6 +1,6 @@
 ## Next steps
 
-Gérer la création de tag via la création d'épisodes coté backend
+Make the form for updating episodes
 
 ## Ajouter à la vue de création des épisodes la fonctionnalité d'insertion dynamique de thèmes.
 

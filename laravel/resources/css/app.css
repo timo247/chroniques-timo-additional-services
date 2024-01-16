@@ -1,0 +1,25 @@
+.suggestionsWrapper {
+    max-height: 20vh;
+    overflow-y: auto;
+    border-radius: 5px;
+}
+
+.ml-2 {
+    margin-left: 4px;
+}
+
+.mr-2 {
+    margin-right: 4px;
+}
+
+.mt-3 {
+    margin-top: 8px;
+}
+
+.mb-3 {
+    margin-bottom: 8px;
+}
+
+.mr-3 {
+    margin-right: 8px;
+}

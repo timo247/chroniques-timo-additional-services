@@ -88,7 +88,7 @@
                 </form>
             </div>
             <a href="javascript:history.back()" class="btn btn-primary"><span
-                    class="glyphicon glyphicon-circle-arrow-left"></span>Retour</a>
+                    class="glyphicon glyphicon-circle-arrow-left mr-2"></span>Retour</a>
         </div>
         <script>
             /* Gérer l'ajout de tags par enter et ajouter un bouton pour ajouter les tags*/
@@ -182,8 +182,8 @@
                 });
                 const deleteBtn = createDomElement({
                     type: 'span',
-                    classList: ['material-icons', 'ml-2'],
-                    textContent: 'close'
+                    classList: ['glyphicon', 'glyphicon-remove', 'ml-2'],
+                    textContent: ''
                 });
                 deleteBtn.addEventListener('click', (e) => {
                     e.target.parentNode.parentNode.removeChild(e.target.parentNode)
@@ -241,28 +241,4 @@
                 input.parentNode.removeChild(input)
             }
         </script>
-
-        <style>
-            .suggestionsWrapper {
-                max-height: 20vh;
-                overflow-y: auto;
-                border-radius: 5px;
-            }
-
-            .ml-2 {
-                margin-left: 4px;
-            }
-
-            .mt-3 {
-                margin-top: 8px;
-            }
-
-            .mb-3 {
-                margin-bottom: 8px;
-            }
-
-            .mr-3 {
-                margin-right: 8px;
-            }
-        </style>
     @endsection
