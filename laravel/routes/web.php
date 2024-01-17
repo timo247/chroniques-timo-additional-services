@@ -22,9 +22,9 @@ Route::get('/', function () {
 
 // Route::resource('articles', ArticleController::class, ['except' => ['show', 'edit', 'update']]);
 Route::get('/episodes', [EpisodesController::class, 'adminIndex'])->name('episodes.adminIndex');
-Route::get('episodes/create', [EpisodesController::class, 'create'])->name('episodes.adminCreate');
-Route::get('/episodes/{id}', [EpisodesController::class, 'adminSingleEpisodeIndex'])->name('episodes.adminSingleEpisodeIndex');
-
+Route::get('/episodes/create', [EpisodesController::class, 'create'])->name('episodes.create');
+Route::get('/episodes/{id}', [EpisodesController::class, 'show']);
+Route::get('/episodes/{id}/edit', [EpisodesController::class, 'edit']);
 
 
 //Auth::routes();

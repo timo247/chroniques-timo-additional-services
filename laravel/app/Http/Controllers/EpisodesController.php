@@ -79,12 +79,18 @@ class EpisodesController extends Controller
 
     public function show($id)
     {
-        //
+        $episode = Episode::with('tags')
+            ->where('id', '=', $id)
+            ->firstOrFail();
+        return view('/episodes/view_display_episode')->with('episode', $episode);
     }
 
     public function edit($id)
     {
-        //
+        $episode = Episode::where('id', '=', $id)->firstOrFail();
+        $possiblePodcasts = Podcast::get()->toArray();
+        $possibleThemes = $this->possibleThemes();
+        return view('/episodes/view_display_episode')->with(['episode' => $episode, 'possibleThemes' => $possibleThemes, 'possiblePodcasts' => $possiblePodcasts]);
     }
 
     public function update(EpisodeUpdateRequest $request, $id)
@@ -264,13 +270,5 @@ class EpisodesController extends Controller
             ->paginate(10);
         $links = $episodes->render();
         return view('/episodes/view_list_episodes', compact('episodes', 'links'));
-    }
-
-    public function adminSingleEpisodeIndex($id)
-    {
-        $episode = Episode::with('tags')
-            ->where('id', '=', $id)
-            ->firstOrFail();
-        return view('/episodes/view_display_episode')->with('episode', $episode);
     }
 }
