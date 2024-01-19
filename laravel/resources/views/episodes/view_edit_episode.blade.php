@@ -22,19 +22,27 @@
                         {!! $errors->first('podcast_id', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('no') ? 'has-error' : '' !!}">
-                        <input class="form-control" placeholder="Nunéro" name="no" type="number">
+                        <label for="no">No</label>
+                        <input class="form-control" placeholder="no" name="no" type="number"
+                            value="{{ $episode->no }}">
                         {!! $errors->first('no', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('spotify_uri') ? 'has-error' : '' !!}">
-                        <input class="form-control" placeholder="Spotify Uri" name="spotify_uri" type="string">
+                        <label for="spotify_uri">Spotify uri</label>
+                        <input class="form-control" placeholder="Spotify Uri" name="spotify_uri" type="string"
+                            value="{{ $episode->spotify_uri }}">
                         {!! $errors->first('spotify-uri', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('title') ? 'has-error' : '' !!}">
-                        <input class="form-control" placeholder="Titre" name="title" type="text">
+                        <label for="title">Title</label>
+                        <input class="form-control" placeholder="Titre" name="title" type="text"
+                            value="{{ $episode->title }}">
                         {!! $errors->first('title', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div class="form-group {!! $errors->has('description') ? 'has-error' : '' !!}">
-                        <input class="form-control" placeholder="Description" name="description" type="text">
+                        <label for="description">Description</label>
+                        <input class="form-control" placeholder="Description" name="description" type="text"
+                            value={{ $episode->description }}>
                         {!! $errors->first('description', '<small class="help-block">:message</small>') !!}
                     </div>
                     <div id="addTagForm" class="form-group">
@@ -66,33 +74,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group {!! $errors->has('characters') ? 'has-error' : '' !!}">
-                        <label>Characters</label><br>
-                        @foreach ($possibleCharacters as $char)
-                            <input type='checkbox' name="characters[]" value='{{ $char['id'] }}'>
-                            <label for='{{ $char['name'] }}'> {{ $char['name'] }} </label>
-                        @endforeach
+                    <div class="form-group tags-inputs hidden">
                     </div>
-
-                    {{-- <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
-                        <label>Themes</label><br>
-                        @foreach ($possibleThemes as $theme)
-                            <input type='checkbox' name="tags[]" value='{{ $theme['value'] }}'>
-                            <label for='{{ $char['name'] }}'> {{ $theme['value'] }} </label>
-                        @endforeach
-                        {!! $errors->first('tags', '<small class="help-block">:message</small>') !!}
-                    </div> --}}
-                    <div class="form-group tags-inputs hidden"></div>
-                    <div class="form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
+                    <div class="form-group">
+                        <a class="displayFileInput mr-2" value="Change episode file" dataset="{clicked: false}">Change
+                            episode
+                            file</a><span class="fileInputDropdown glyphicon glyphicon-chevron-down"></span>
+                    </div>
+                    <div class="fileInput hidden form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
                         <input class="form-control" name="audio-file" type="file" accept="audio/*"
                             enctype="multipart/form-data">
                         {!! $errors->first('audio-file', '<small class="help-block">:message</small>') !!}
                     </div>
-                    <input class="btn btn-info pull-right" type="submit" value="Envoyer">
+                    <input class="btn btn-info pull-right" type="submit" value="Update episode">
                 </form>
             </div>
             <a href="javascript:history.back()" class="btn btn-primary"><span
-                    class="glyphicon glyphicon-circle-arrow-left mr-2"></span>Retour</a>
+                    class="glyphicon glyphicon-circle-arrow-left mr-3"></span>Back</a>
         </div>
         <script>
             /* Gérer l'ajout de tags par enter et ajouter un bouton pour ajouter les tags*/
@@ -105,6 +103,7 @@
                 const addTagBtn = document.getElementById('addTagBtn');
                 const addTagForm = document.getElementById('addTagForm');
                 const suggestionsWrapper = document.querySelector('.suggestionsWrapper');
+                preSelectEpisodeTags()
 
                 addTagForm.addEventListener('submit', e => {
                     e.preventDefault();
@@ -140,6 +139,18 @@
                 suggestionsWrapper.addEventListener('scroll', e => {
                     manageScrollableElementBorder(e.target);
                 });
+                const displayFileInputBtn = document.querySelector('.displayFileInput')
+                displayFileInputBtn.addEventListener('click', e => {
+                    console.log(displayFileInputBtn)
+                    if (!displayFileInputBtn.dataset['clicked']) {
+                        document.querySelector('.fileInputDropdown').classList.remove('glyphicon-chevron-down')
+                        document.querySelector('.fileInputDropdown').classList.add('glyphicon-chevron-up')
+                    } else {
+                        document.querySelector('.fileInputDropdown').classList.add('glyphicon-chevron-down')
+                        document.querySelector('.fileInputDropdown').classList.remove('glyphicon-chevron-up')
+                    }
+                    document.querySelector('.fileInput').classList.toggle('hidden')
+                })
             });
 
             function deleteChildren(selector) {
@@ -243,6 +254,13 @@
             function removeInputFromMainForm(tag) {
                 const input = document.querySelector(`.input-${tag}`)
                 input.parentNode.removeChild(input)
+            }
+
+            function preSelectEpisodeTags() {
+                const preSelectedTags = {!! json_encode($tags) !!}
+                preSelectedTags.forEach(tag => {
+                    addTag(tag.value)
+                })
             }
         </script>
     @endsection

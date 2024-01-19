@@ -88,9 +88,10 @@ class EpisodesController extends Controller
     public function edit($id)
     {
         $episode = Episode::where('id', '=', $id)->firstOrFail();
+        $tags = $episode->tags;
         $possiblePodcasts = Podcast::get()->toArray();
         $possibleThemes = $this->possibleThemes();
-        return view('/episodes/view_edit_episode')->with(['episode' => $episode, 'possibleThemes' => $possibleThemes, 'possiblePodcasts' => $possiblePodcasts]);
+        return view('/episodes/view_edit_episode')->with(['episode' => $episode, 'possibleThemes' => $possibleThemes, 'tags' => $tags, 'possiblePodcasts' => $possiblePodcasts]);
     }
 
     public function update(EpisodeUpdateRequest $request, $id)
