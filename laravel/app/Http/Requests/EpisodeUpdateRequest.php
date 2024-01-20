@@ -29,10 +29,10 @@ class EpisodeUpdateRequest extends FormRequest
         //dd($this->input('podcast_id'), $podcastsIdLimits);
         return [
             'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
-            'no' => 'nullable|numeric',
-            'title' => 'nullable',
-            'description' => 'nullable',
-            'characters' => 'nullable|array',
+            'no' => 'numeric',
+            'title' => 'alpha',
+            'description' => 'alpha',
+            'spotify_uri' => 'alpha',
             'tags' => 'nullable|array|exists:tags,id',
             'audio-file' => 'nullable|mimetypes:audio/mpeg',
         ];

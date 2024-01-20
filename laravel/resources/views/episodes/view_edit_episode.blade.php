@@ -77,7 +77,7 @@
                     <div class="form-group tags-inputs hidden">
                     </div>
                     <div class="form-group">
-                        <a class="displayFileInput mr-2" value="Change episode file" dataset="{clicked: false}">Change
+                        <a class="displayFileInput mr-2" value="Change episode file" data-clicked=false>Change
                             episode
                             file</a><span class="fileInputDropdown glyphicon glyphicon-chevron-down"></span>
                     </div>
@@ -141,13 +141,15 @@
                 });
                 const displayFileInputBtn = document.querySelector('.displayFileInput')
                 displayFileInputBtn.addEventListener('click', e => {
-                    console.log(displayFileInputBtn)
-                    if (!displayFileInputBtn.dataset['clicked']) {
+                    console.log(displayFileInputBtn.dataset)
+                    if (displayFileInputBtn.dataset.clicked == 'false') {
                         document.querySelector('.fileInputDropdown').classList.remove('glyphicon-chevron-down')
                         document.querySelector('.fileInputDropdown').classList.add('glyphicon-chevron-up')
+                        displayFileInputBtn.dataset.clicked = 'true'
                     } else {
-                        document.querySelector('.fileInputDropdown').classList.add('glyphicon-chevron-down')
                         document.querySelector('.fileInputDropdown').classList.remove('glyphicon-chevron-up')
+                        document.querySelector('.fileInputDropdown').classList.add('glyphicon-chevron-down')
+                        displayFileInputBtn.dataset.clicked = 'false'
                     }
                     document.querySelector('.fileInput').classList.toggle('hidden')
                 })

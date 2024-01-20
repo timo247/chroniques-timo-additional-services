@@ -1,37 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 @charset "UTF-8";
-
-/* Peronalized CSS */
-.suggestionsWrapper {
-  max-height: 20vh;
-  overflow-y: auto;
-  border-radius: 5px;
-}
-
-.ml-2 {
-  margin-left: 4px;
-}
-
-.mr-2 {
-  margin-right: 4px;
-}
-
-.mt-3 {
-  margin-top: 8px;
-}
-
-.mb-3 {
-  margin-bottom: 8px;
-}
-
-.mr-3 {
-  margin-right: 8px;
-}
-
-
 /*!
-  Base App css
-
  * Bootstrap v5.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.

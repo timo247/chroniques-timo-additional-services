@@ -12,7 +12,8 @@
     <link media="all" type="text/css" rel="stylesheet"
         href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstraptheme.
 min.css">
-    <link href="laravel\resources\css\app.css" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
     <style>
         textarea {
             resize: none
