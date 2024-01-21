@@ -6,7 +6,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">Modification d'un podcast</div>
             <div class="panel-body">
-                <form method="POST" action="{{ route('episodes.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('episodes.update') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group {!! $errors->has('podcast_id') ? 'has-error' : '' !!}">
                         <label>Saison du podcast</label>

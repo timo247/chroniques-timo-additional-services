@@ -24,7 +24,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/account', [AuthController::class, 'getAccount'])->middleware('auth:sanctum');
-Route::apiResource('episodes', EpisodesController::class);
+Route::apiResource('episodes', EpisodesController::class)->except(['update']);
 Route::apiResource('podcasts', PodcastsController::class);
 Route::apiResource('tags', TagsController::class);
 Route::get('plays', [EpisodesController::class, 'getPlays']);

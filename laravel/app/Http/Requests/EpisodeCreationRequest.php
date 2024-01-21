@@ -33,7 +33,7 @@ class EpisodeCreationRequest extends FormRequest
             'characters' => 'nullable|array',
             'tags' => 'nullable|array',
             'audio-file' => 'required|mimetypes:audio/mpeg',
-            'spotify_uri' => 'required|alpha'
+            'spotify_uri' => 'required|alpha_num'
         ];
     }
 }
