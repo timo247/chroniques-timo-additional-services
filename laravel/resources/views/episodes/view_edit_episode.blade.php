@@ -6,8 +6,10 @@
         <div class="panel panel-info">
             <div class="panel-heading">Modification d'un podcast</div>
             <div class="panel-body">
-                <form method="POST" action="{{ route('episodes.update') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('episodes.update', ['id' => $episode->id]) }}"
+                    enctype="multipart/form-data">
                     @csrf
+                    <div class="hidden" name="id" value="{{ $episode->id }}"></div>
                     <div class="form-group {!! $errors->has('podcast_id') ? 'has-error' : '' !!}">
                         <label>Saison du podcast</label>
                         <select name="podcast_id">
@@ -63,30 +65,31 @@
                         </div>
                         <div class="row">
                             <div class="col col-12 col-sm-12 col-md-12">
-                                <input type="text" id="tagInput" placeholder="Ajouter des tags">
-                                <input id="addTagBtn" type="submit" value="Ajouter" />
+                                <div class="tagInput form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
+                                    <input type="text" id="tagInput" placeholder="Ajouter des tags">
+                                    {!! $errors->first('tags', '<small class="help-block">:message</small>') !!}
+                                    <input id="addTagBtn" type="submit" value="Ajouter" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-12 col-sm-12 col-md-12">
-                                <div id="selectedTags" class="flex-wrap mt-3 mb-3">
+                            <div class="row">
+                                <div class="col col-12 col-sm-12 col-md-12">
+                                    <div id="selectedTags" class="flex-wrap mt-3 mb-3">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group tags-inputs hidden">
-                    </div>
-                    <div class="form-group">
-                        <a class="displayFileInput mr-2" value="Change episode file" data-clicked=false>Change
-                            episode
-                            file</a><span class="fileInputDropdown glyphicon glyphicon-chevron-down"></span>
-                    </div>
-                    <div class="fileInput hidden form-group {!! $errors->has('tags') ? 'has-error' : '' !!}">
-                        <input class="form-control" name="audio-file" type="file" accept="audio/*"
-                            enctype="multipart/form-data">
-                        {!! $errors->first('audio-file', '<small class="help-block">:message</small>') !!}
-                    </div>
-                    <input class="btn btn-info pull-right" type="submit" value="Update episode">
+                        <div class="form-group tags-inputs hidden">
+                        </div>
+                        <div class="form-group">
+                            <a class="displayFileInput mr-2" value="Change episode file" data-clicked=false>Change
+                                episode
+                                file</a><span class="fileInputDropdown glyphicon glyphicon-chevron-down"></span>
+                        </div>
+                        <div class="fileInput hidden form-group {!! $errors->has('audio-file') ? 'has-error' : '' !!}">
+                            <input class="form-control" name="audio-file" type="file" enctype="multipart/form-data">
+                            {!! $errors->first('audio-file', '<small class="help-block">:message</small>') !!}
+                        </div>
+                        <input class="btn btn-info pull-right" type="submit" value="Update episode">
                 </form>
             </div>
             <a href="javascript:history.back()" class="btn btn-primary"><span

@@ -25,7 +25,7 @@ Route::get('/episodes', [EpisodesController::class, 'adminIndex'])->name('episod
 Route::get('/episodes/create', [EpisodesController::class, 'create'])->name('episodes.create');
 Route::get('/episodes/{id}', [EpisodesController::class, 'show']);
 Route::get('/episodes/{id}/edit', [EpisodesController::class, 'edit']);
-Route::post('/episodes', [EpisodesController::class, 'update'])->name('episodes.update');
+Route::post('/episodes/{id}', [EpisodesController::class, 'update'])->name('episodes.update');
 
 
 //Auth::routes();

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\PodcastsController;
 
@@ -26,15 +25,16 @@ class EpisodeUpdateRequest extends FormRequest
     public function rules()
     {
         $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
-        //dd($this->input('podcast_id'), $podcastsIdLimits);
+        //dd($this->input('tags'), $podcastsIdLimits);
         return [
+            'id' => 'exists:episodes,id',
             'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
             'no' => 'nullable|numeric',
             'title' => 'nullable',
             'description' => 'nullable',
             'spotify_uri' => 'alpha_num',
-            'tags' => 'nullable|array|exists:tags,id',
-            'audio-file' => 'nullable|mimetypes:audio/mpeg',
+            'tags' => 'nullable|array',
+            'audio-file' => 'mimetypes:audio/mpeg|nullable',
         ];
     }
 }

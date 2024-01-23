@@ -9,15 +9,12 @@ use App\Models\Podcast;
 use App\Models\Character;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
-use function PHPUnit\Framework\isEmpty;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\BaseController;
 
 use App\Http\Requests\EpisodeUpdateRequest;
 use App\Http\Requests\AddEpisodePlayRequest;
 use App\Http\Requests\EpisodeCreationRequest;
-use Illuminate\Console\View\Components\Error;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EpisodesController extends Controller
@@ -94,11 +91,12 @@ class EpisodesController extends Controller
         return view('/episodes/view_edit_episode')->with(['episode' => $episode, 'possibleThemes' => $possibleThemes, 'tags' => $tags, 'possiblePodcasts' => $possiblePodcasts]);
     }
 
-    public function update(EpisodeUpdateRequest $request, $id)
+    public function update(EpisodeUpdateRequest $request)
     {
         $cautionMessage = "false";
+        dd("ici");
         try {
-            $episode = Episode::findOrFail($id);
+            $episode = Episode::findOrFail($request->input('id'));
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }
