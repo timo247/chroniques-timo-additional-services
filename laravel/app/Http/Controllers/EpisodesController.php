@@ -94,11 +94,14 @@ class EpisodesController extends Controller
     public function update(EpisodeUpdateRequest $request)
     {
         $cautionMessage = "false";
-        dd("ici");
+        //dd("ici");
         try {
             $episode = Episode::findOrFail($request->input('id'));
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
+        }
+        if ($request->input('podcast_id')) {
+            $this->handlePodcastIdChange($episode, $request);
         }
         if ($request->filled('no')) {
             $cautionMessage = $this->handleEpisodeNoInput($episode, $request);
@@ -109,6 +112,9 @@ class EpisodesController extends Controller
         if ($request->filled('description')) {
             $episode->description = $request->input('description');
         }
+        if ($request->filled('spotify_uri')) {
+            $episode->spotify_uri = $request->input('spotify_uri');
+        }
         if ($request->hasFile('audio-file')) {
             $ancientPathAndName = $this->getFilePathAndName($episode->podcast_id, $episode->no);
             if (Storage::exists($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'])) {
@@ -118,7 +124,10 @@ class EpisodesController extends Controller
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
         if ($request->input('tags') != null) {
-            $this->handleTagsChange($episode, $request);
+            foreach ($request->input('tags') as $tag) {
+                $tagModel = Tag::firstOrCreate(['value' => $tag], ['name' => BaseController::cleanCaseString($tag)]);
+                $episode->tags()->attach($tagModel);
+            }
         }
         $episode->save();
         return response()->json(['message' => 'episode updated successfully', 'episode' => $episode, "warning" => $cautionMessage], 404);
@@ -187,6 +196,36 @@ class EpisodesController extends Controller
 
     //Handle changes in DB and audio file storage for the episode depending on the no sent and sends a caution message if a file has been backed up and or if some data is now affected to no file in DB.
     public function handleEpisodeNoInput($episode, $request)
+    {
+        $cautionMessageToSend = false;
+        $fileManagementMessage = "";
+        $dataBackupMessage = "";
+        // abs handles the case of affecting an anciently -n number to a n number. Eg: i update an Episode with -44 value to 44
+        if ($episode->no != $request->input('no')) {
+            $cautionMessageToSend = true;
+            $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
+            if ($existingEpisodes->count() > 0) {
+                foreach ($existingEpisodes as $existingEpisode) {
+                    $existingEpisode->update(['no' => -$existingEpisode->no]);
+                    $dataBackupMessage .= 'A data for episode ' .  abs($existingEpisode->no) . ' already existed and is now stored in DB as:' . BaseController::modelToReadableString($existingEpisode) . ".\n";
+                }
+                if (abs($episode->no) != abs($request->input('no'))) {
+                    $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $request->input('no'));
+                    $fileManagementMessage .= 'A file with number ' . $request->input('no') . ' existed and is now stored with \'backup-\' prefix.' . "\n";
+                }
+            }
+            $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
+            $fileManagementMessage .= 'The episode file has been renamed and now ends with. ' . $request->input('no') . '.';
+            $episode->no = $request->input('no');
+        }
+        if ($cautionMessageToSend) {
+            return $dataBackupMessage . $fileManagementMessage;
+        } else {
+            return 'false';
+        }
+    }
+
+    public function handlePodcastIdInput($episode, $request)
     {
         $cautionMessageToSend = false;
         $fileManagementMessage = "";

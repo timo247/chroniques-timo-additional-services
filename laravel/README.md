@@ -1,5 +1,7 @@
 ## Next steps
 
+To do: update handelPodcastIdChange
+
 Make the form for updating episodes
 
 ## Ajouter à la vue de création des épisodes la fonctionnalité d'insertion dynamique de thèmes.

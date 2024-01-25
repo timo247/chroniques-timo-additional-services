@@ -8,7 +8,6 @@
             <div class="panel-body">
                 <form method="POST" action="{{ route('episodes.store') }}" enctype="multipart/form-data">
                     @csrf
-                    <div class='hidden'><input name='id' value='{{ $episodes->id }}'></div>
                     <div class="form-group {!! $errors->has('podcast_id') ? 'has-error' : '' !!}">
                         <label>Saison du podcast</label>
                         <select name="podcast_id">
