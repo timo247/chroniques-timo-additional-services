@@ -53,7 +53,7 @@ class BaseController extends Controller
         $attributes = $model->getAttributes();
         $attributesAsString = '{';
         foreach ($attributes as $key => $value) {
-            $attributesAsString .= ucfirst(str_replace('_', ' ', $key)) . ': ' . $value . "\n";
+            $attributesAsString .= ucfirst(str_replace('_', ' ', $key)) . ': ' . $value . ",";
         }
         $attributesAsString .= '}';
         return $attributesAsString;

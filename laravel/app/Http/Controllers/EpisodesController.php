@@ -93,20 +93,19 @@ class EpisodesController extends Controller
 
     public function update(EpisodeUpdateRequest $request)
     {
-        $cautionMessage = "false";
+        $numberCautionMessage = "";
+        $podcastCautionMessage = "";
         //dd("ici");
         try {
             $episode = Episode::findOrFail($request->input('id'));
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }
-        if ($request->input('podcast_id')) {
-            if ($request->podcast_id != $episode->podcast_id) {
-                $this->handlePodcastIdChange($episode, $request);
-            }
-        }
         if ($request->filled('no')) {
-            $cautionMessage = $this->handleEpisodeNoInput($episode, $request);
+            $numberCautionMessage = $this->handleEpisodeNoInput($episode, $request);
+        }
+        if ($request->input('podcast_id')) { //put after input->no handling on purpose
+            $podcastCautionMessage = $this->handlePodcastIdInput($episode, $request);
         }
         if ($request->filled('title')) {
             $episode->title = $request->input('title');
@@ -141,7 +140,7 @@ class EpisodesController extends Controller
             }
         }
         $episode->save();
-        return response()->json(['message' => 'episode updated successfully', 'episode' => $episode, "warning" => $cautionMessage], 404);
+        return response()->json(['message' => 'episode updated successfully', 'episode' => $episode, "warning" => $numberCautionMessage . ',' . $podcastCautionMessage], 404);
     }
 
     public function destroy($id)
@@ -197,15 +196,13 @@ class EpisodesController extends Controller
         return $possibleCharacters;
     }
 
-    public function getFilePathAndName($podcastId, $episodeNo)
-    {
-        $podcastName = PodcastsController::retrievePodcastName($podcastId);
-        $filePath = 'audio' . DIRECTORY_SEPARATOR . 'podcasts' . DIRECTORY_SEPARATOR  . $podcastName;
-        $fileName = $podcastName . '-' . $episodeNo . '.mp3';
-        return ['path' => $filePath, 'name' => $fileName];
-    }
-
-    //Handle changes in DB and audio file storage for the episode depending on the no sent and sends a caution message if a file has been backed up and or if some data is now affected to no file in DB.
+    /*
+    Handle te application of changes for episode number in database and audio file.
+    Audio files are stored this way: audio/<podcast_name>/<podcast_name>-<episode_no>.mp3
+    If an episode's number is changed for a number already affected ot another episode for the same podcast, the data of the erased episode is saved with a number = -1*number, so it can be filtered when getting the list of episodes of a podcast
+    The previous file previously linked to the episode number is then stored as audio/<podcast_name>/backup-<podcast_name>-<episode_no>.mp3
+    The new file for episode is then stored as audio/podcast_name/<podcast_name>-<episode_no>.mp3
+    */
     public function handleEpisodeNoInput($episode, $request)
     {
         $cautionMessageToSend = false;
@@ -214,7 +211,7 @@ class EpisodesController extends Controller
         // abs handles the case of affecting an anciently -n number to a n number. Eg: i update an Episode with -44 value to 44
         if ($episode->no != $request->input('no')) {
             $cautionMessageToSend = true;
-            $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
+            $existingEpisodes = Episode::where('no', '=', $request->input('no'))->where('podcast_id', '=', $episode->podcast_id)->get();
             if ($existingEpisodes->count() > 0) {
                 foreach ($existingEpisodes as $existingEpisode) {
                     $existingEpisode->update(['no' => -$existingEpisode->no]);
@@ -225,7 +222,7 @@ class EpisodesController extends Controller
                     $fileManagementMessage .= 'A file with number ' . $request->input('no') . ' existed and is now stored with \'backup-\' prefix.' . "\n";
                 }
             }
-            $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
+            $this->renameEpisodeFile($episode->podcast_id, $episode->podcast_id, $episode->no, $request->input('no'));
             $fileManagementMessage .= 'The episode file has been renamed and now ends with. ' . $request->input('no') . '.';
             $episode->no = $request->input('no');
         }
@@ -236,28 +233,34 @@ class EpisodesController extends Controller
         }
     }
 
+    /*
+    Handle te application of changes when affecting an episode to another podcast in DB and files. 
+    Audio files are stored this way: audio/<podcast_name>/<podcast_name>-<episode_no>.mp3
+    If an episode's podcast is changed for a podcast where an episode with the same number already existed, the data of the erased episode is saved with a number = -1*number, so it can be filtered when getting the list of episodes of a podcast
+    The previous file previously linked to the episode number is then stored as audio/<podcast_name>/backup-<podcast_name>-<episode_no>.mp3
+    The new file for episode is then stored as audio/podcast_name/<podcast_name>-<episode_no>.mp3
+    */
     public function handlePodcastIdInput($episode, $request)
     {
         $cautionMessageToSend = false;
         $fileManagementMessage = "";
         $dataBackupMessage = "";
+        $podcastName = PodcastsController::retrievePodcastName($request->input('podcast_id'));
         // abs handles the case of affecting an anciently -n number to a n number. Eg: i update an Episode with -44 value to 44
-        if ($episode->no != $request->input('no')) {
+        if ($episode->podcast_id != $request->input('podcast_id')) {
             $cautionMessageToSend = true;
-            $existingEpisodes = Episode::where('no', '=', $request->input('no'))->get();
+            $existingEpisodes = Episode::where('no', '=', $episode->no)->where('podcast_id', '=', $request->input('podcast_id'))->get();
             if ($existingEpisodes->count() > 0) {
                 foreach ($existingEpisodes as $existingEpisode) {
                     $existingEpisode->update(['no' => -$existingEpisode->no]);
-                    $dataBackupMessage .= 'A data for episode ' .  abs($existingEpisode->no) . ' already existed and is now stored in DB as:' . BaseController::modelToReadableString($existingEpisode) . ".\n";
+                    $dataBackupMessage .= 'A data for episode ' .  abs($existingEpisode->no) . 'of podcast: ' . $podcastName . ' already existed and is now stored in DB as:' . BaseController::modelToReadableString($existingEpisode) . ".\n";
                 }
-                if (abs($episode->no) != abs($request->input('no'))) {
-                    $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $request->input('no'));
-                    $fileManagementMessage .= 'A file with number ' . $request->input('no') . ' existed and is now stored with \'backup-\' prefix.' . "\n";
-                }
+                $this->backupUpdatedEpisodeFile($request->input('podcast_id'), $episode->no);
+                $fileManagementMessage .= 'A file with podcast id ' . $request->input('podcast_id') . ' existed and is now stored with \'backup-\' prefix.' . "\n";
             }
-            $this->renameEpisodeFile($request->input('podcast_id'), $episode->no, $request->input('no'));
-            $fileManagementMessage .= 'The episode file has been renamed and now ends with. ' . $request->input('no') . '.';
-            $episode->no = $request->input('no');
+            $this->renameEpisodeFile($episode->podcast_id, $request->input('podcast_id'), $episode->no, $episode->no);
+            $fileManagementMessage .= 'The episode file has been renamed and is now located in folder: /' . $podcastName . '.';
+            $episode->podcast_id = $request->input('podcast_id');
         }
         if ($cautionMessageToSend) {
             return $dataBackupMessage . $fileManagementMessage;
@@ -276,13 +279,21 @@ class EpisodesController extends Controller
     }
 
     //Affects a new name to an already stored episode 
-    public function renameEpisodeFile($podcastId, $ancientNo, $newNo)
+    public function renameEpisodeFile($ancientPodcastId, $newPodcastId, $ancientNo, $newNo)
     {
-        $ancientPathAndName = $this->getFilePathAndName($podcastId, $ancientNo);
-        $newPathAndName = $this->getFilePathAndName($podcastId, $newNo);
+        $ancientPathAndName = $this->getFilePathAndName($ancientPodcastId, $ancientNo);
+        $newPathAndName = $this->getFilePathAndName($newPodcastId, $newNo);
         if (Storage::exists($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'])) {
             Storage::move($ancientPathAndName['path'] . '/' . $ancientPathAndName['name'], $newPathAndName['path'] . '/' . $newPathAndName['name']);
         }
+    }
+
+    public function getFilePathAndName($podcastId, $episodeNo)
+    {
+        $podcastName = PodcastsController::retrievePodcastName($podcastId);
+        $filePath = 'audio' . DIRECTORY_SEPARATOR . 'podcasts' . DIRECTORY_SEPARATOR  . $podcastName;
+        $fileName = $podcastName . '-' . $episodeNo . '.mp3';
+        return ['path' => $filePath, 'name' => $fileName];
     }
 
     public function handleTagsChange($episode, $request)
