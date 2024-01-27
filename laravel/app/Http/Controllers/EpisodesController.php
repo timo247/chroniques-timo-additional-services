@@ -101,7 +101,9 @@ class EpisodesController extends Controller
             return response()->json(['message' => $e->getMessage()], 404);
         }
         if ($request->input('podcast_id')) {
-            $this->handlePodcastIdChange($episode, $request);
+            if ($request->podcast_id != $episode->podcast_id) {
+                $this->handlePodcastIdChange($episode, $request);
+            }
         }
         if ($request->filled('no')) {
             $cautionMessage = $this->handleEpisodeNoInput($episode, $request);
@@ -124,9 +126,18 @@ class EpisodesController extends Controller
             Storage::putFileAs($newPathAndName['path'], $request->file('audio-file'), $newPathAndName['name']);
         }
         if ($request->input('tags') != null) {
+            //add all unlinked tags to episode
             foreach ($request->input('tags') as $tag) {
                 $tagModel = Tag::firstOrCreate(['value' => $tag], ['name' => BaseController::cleanCaseString($tag)]);
-                $episode->tags()->attach($tagModel);
+                if (!$episode->tags->contains($tagModel)) {
+                    $episode->tags()->attach($tagModel);
+                }
+            }
+            //Remove all linked episode not in the request
+            foreach ($episode->tags as $tag) {
+                if (!in_array($tag->value, $request->input('tags'))) {
+                    $episode->tags()->detach($tag);
+                }
             }
         }
         $episode->save();
