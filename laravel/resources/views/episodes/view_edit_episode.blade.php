@@ -71,10 +71,10 @@
                                     <input id="addTagBtn" type="submit" value="Ajouter" />
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col col-12 col-sm-12 col-md-12">
-                                    <div id="selectedTags" class="flex-wrap mt-3 mb-3">
-                                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-12 col-sm-12 col-md-12">
+                                <div id="selectedTags" class="flex-wrap mt-3 mb-3">
                                 </div>
                             </div>
                         </div>

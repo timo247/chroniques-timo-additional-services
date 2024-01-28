@@ -28,13 +28,15 @@ class EpisodeUpdateRequest extends FormRequest
         //dd($this->input('tags'), $podcastsIdLimits);
         return [
             'id' => 'exists:episodes,id',
-            'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
-            'no' => 'nullable|numeric',
+            'podcast_id' => 'integer|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
+            'no' => 'nullable|integer',
             'title' => 'nullable',
             'description' => 'nullable',
             'spotify_uri' => 'alpha_num',
             'tags' => 'nullable|array',
             'audio-file' => 'mimetypes:audio/mpeg|nullable',
+            'sound_quality_rating' => 'nullable|integer|min:1|max:5',
+            'content_quality_rating' => 'nullable|integer|min:1|max:5'
         ];
     }
 }

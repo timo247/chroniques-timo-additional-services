@@ -26,14 +26,16 @@ class EpisodeCreationRequest extends FormRequest
     {
         $podcastsIdLimits = PodcastsController::maxMinPodcastsId();
         return [
-            'podcast_id' => 'numeric|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
-            'no' => 'required|numeric|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
+            'podcast_id' => 'integer|min:' . $podcastsIdLimits['min'] . '|max:' . $podcastsIdLimits['max'],
+            'no' => 'required|integer|unique:episodes,no,NULL,id,podcast_id,' . $this->podcast_id,
             'title' => 'required',
             'description' => 'nullable',
             'characters' => 'nullable|array',
             'tags' => 'nullable|array',
             'audio-file' => 'required|mimetypes:audio/mpeg',
-            'spotify_uri' => 'required|alpha_num'
+            'spotify_uri' => 'required|alpha_num',
+            'sound_quality_rating' => 'nullable|integer|min:1|max:5',
+            'content_quality_rating' => 'nullable|integer|min:1|max:5'
         ];
     }
 }

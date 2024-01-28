@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('spotify_uri');
+            $table->integer('sound_quality_rating')->nullable();
+            $table->integer('content_quality_rating')->nullable();
             $table->foreign('podcast_id')->references('id')->on('podcasts')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(["id", "podcast_id"]);
             $table->timestamps();

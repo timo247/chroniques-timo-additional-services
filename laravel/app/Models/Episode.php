@@ -19,7 +19,9 @@ class Episode extends Model
         "available",
         "tags",
         "characters",
-        "spotify_uri"
+        "spotify_uri",
+        "sound_quality_rating",
+        "content_quality_rating"
     ];
 
     public function podcast()
