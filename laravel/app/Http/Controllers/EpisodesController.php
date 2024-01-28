@@ -55,6 +55,8 @@ class EpisodesController extends Controller
         $episode->title = $request->input('title');
         $episode->description = $request->input('description');
         $episode->spotify_uri = $request->input('spotify_uri');
+        $episode->sound_quality_rating =  $request->input('sound_quality_rating');
+        $episode->content_quality_rating =  $request->input('content_quality_rating');
         $episode->save();
         //Ajouter les personnages affiliés à l'épisode
         if ($request->input('characters') != null) {
@@ -115,6 +117,12 @@ class EpisodesController extends Controller
         }
         if ($request->filled('spotify_uri')) {
             $episode->spotify_uri = $request->input('spotify_uri');
+        }
+        if ($request->filled('sound_quality_rating')) {
+            $episode->sound_quality_rating =  $request->input('sound_quality_rating');
+        }
+        if ($request->filled('content_quality_rating')) {
+            $episode->content_quality_rating =  $request->input('content_quality_rating');
         }
         if ($request->hasFile('audio-file')) {
             $ancientPathAndName = $this->getFilePathAndName($episode->podcast_id, $episode->no);

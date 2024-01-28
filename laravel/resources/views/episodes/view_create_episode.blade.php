@@ -33,6 +33,22 @@
                         <input class="form-control" placeholder="Description" name="description" type="text">
                         {!! $errors->first('description', '<small class="help-block">:message</small>') !!}
                     </div>
+                    <div class="form-group">
+                        <label>Sound quality</label>
+                        <select name="sound_quality_rating">
+                            @for ($i = 1; $i < 6; $i++)
+                                <option value="{{ $i }}">{{ $i }} / 5</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Content quality</label>
+                        <select name="content_quality_rating">
+                            @for ($i = 1; $i < 6; $i++)
+                                <option value="{{ $i }}">{{ $i }} / 5</option>
+                            @endfor
+                        </select>
+                    </div>
                     <div id="addTagForm" class="form-group">
                         <div class="row position-relative">
                             <div class="col col-12 col-sm-12 col-md-12 position-absolute bottom-0 start-0">

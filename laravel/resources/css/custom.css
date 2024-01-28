@@ -1,6 +1,6 @@
 :root {
-
-    /* Peronalized CSS */
+  
+  /* Peronalized CSS */
 .suggestionsWrapper {
     max-height: 20vh;
     overflow-y: auto;
@@ -26,5 +26,4 @@
   .mr-3 {
     margin-right: 8px;
   }
-
 }
