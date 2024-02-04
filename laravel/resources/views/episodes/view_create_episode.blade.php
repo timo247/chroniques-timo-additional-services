@@ -276,6 +276,8 @@
                         starElements.forEach(el => {
                             if (el.dataset.grade > clickedStar) {
                                 el.classList.remove('hovered-star')
+                            } else {
+                                el.classList.add('hovered-star')
                             }
                         })
                     })
