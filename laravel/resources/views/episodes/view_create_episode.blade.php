@@ -35,19 +35,13 @@
                     </div>
                     <div class="form-group">
                         <label>Sound quality</label>
-                        <select name="sound_quality_rating">
-                            @for ($i = 1; $i < 6; $i++)
-                                <option value="{{ $i }}">{{ $i }} / 5</option>
-                            @endfor
-                        </select>
+                        <input type="number" name="sound_quality_rating" class="hidden sound-quality-rating-input" />
+                        <div class="sound-quality-stars"><span class="star"></span></div>
                     </div>
                     <div class="form-group">
                         <label>Content quality</label>
-                        <select name="content_quality_rating">
-                            @for ($i = 1; $i < 6; $i++)
-                                <option value="{{ $i }}">{{ $i }} / 5</option>
-                            @endfor
-                        </select>
+                        <input type="number" name="content_quality_rating" class="hidden content-quality-rating-input" />
+                        <div class="content-quality-stars"><span class="star"></span></div>
                     </div>
                     <div id="addTagForm" class="form-group">
                         <div class="row position-relative">
@@ -256,5 +250,47 @@
                 const input = document.querySelector(`.input-${tag}`)
                 input.parentNode.removeChild(input)
             }
+        </script>
+
+        <script>
+            function generateStarRating(inputSelector, starsDivSelector, spanStarSelector) {
+                const spanStar = document.querySelector(spanStarSelector);
+                const starsDiv = document.querySelector(starsDivSelector)
+                let clickedStar = 0;
+                for (let i = 0; i < 5; i++) {
+                    spanStarClone = spanStar.cloneNode(true);
+                    spanStarClone.setAttribute('data-grade', i + 1);
+                    spanStarClone.textContent = '★';
+                    spanStarClone.addEventListener('mouseover', e => {
+                        const starElements = starsDiv.querySelectorAll(spanStarSelector)
+                        starElements.forEach(el => {
+                            if (el.dataset.grade <= e.target.dataset.grade) {
+                                el.classList.add('hovered-star')
+                            } else {
+                                el.classList.remove('hovered-star')
+                            }
+                        })
+                    })
+                    spanStarClone.addEventListener('mouseleave', e => {
+                        const starElements = starsDiv.querySelectorAll(spanStarSelector)
+                        starElements.forEach(el => {
+                            if (el.dataset.grade > clickedStar) {
+                                el.classList.remove('hovered-star')
+                            }
+                        })
+                    })
+                    spanStarClone.addEventListener('click', e => {
+                        starsDiv.querySelectorAll(spanStarSelector).forEach(starEl => {
+                            starEl.classList.remove('clicked-star')
+                        })
+                        e.target.classList.add('clicked-star')
+                        document.querySelector(inputSelector).setAttribute('value', e.target.dataset.grade)
+                        clickedStar = e.target.dataset.grade;
+                    })
+                    starsDiv.appendChild(spanStarClone);
+                }
+            }
+            generateStarRating('.sound-quality-rating-input', '.sound-quality-stars', '.star');
+            generateStarRating('.content-quality-rating-input', '.content-quality-stars', '.star');
         </script>
     @endsection
