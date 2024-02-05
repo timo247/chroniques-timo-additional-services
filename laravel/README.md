@@ -1,5 +1,11 @@
 ## Next steps
 
+Organiserles ests de remplacement de fichiers et création
+ester la création et la modif d'épisode
+Mirgrer sur Mysql
+Tester une sauvegrde de la DB
+Appeler le backend depuis le front
+
 To do: update handelPodcastIdChange
 
 Make the form for updating episodes
