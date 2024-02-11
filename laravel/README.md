@@ -1,5 +1,12 @@
 ## Next steps
 
+Installer laravel cors fruitcake:
+Your requirements could not be resolved to an installable set of packages.
+
+Problem 1 - Root composer.json requires fruitcake/laravel-cors ^3.0 -> satisfiable by fruitcake/laravel-cors[v3.0.0, 3.0.x-dev]. - fruitcake/laravel-cors[v3.0.0, ..., 3.0.x-dev] require illuminate/support ^6|^7|^8|^9 -> found illuminate/support[v6.0.0, ..., 6.x-dev, v7.0.0, ..., 7.x-dev, v8.0.0, ..., 8.x-dev, v9.0.0-beta.1, ..., 9.x-dev] but these were not loaded, likely because it conflicts with another require.
+
+You can also try re-running composer require with an explicit version constraint, e.g. "composer require fruitcake/laravel-cors:\*" to figure out if any version is installable, or "composer require fruitcake/laravel-cors:^2.1" if you know which you need.
+
 Organiserles ests de remplacement de fichiers et création
 
 ester la création et la modif d'épisode
@@ -10,6 +17,10 @@ Appeler le backend depuis le front
 To do: update handelPodcastIdChange
 
 Make the form for updating episodes
+
+## Developper notes
+
+A middleware was added to displaye requests on laravel.logs
 
 ## Ajouter à la vue de création des épisodes la fonctionnalité d'insertion dynamique de thèmes.
 

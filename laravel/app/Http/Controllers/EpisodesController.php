@@ -9,9 +9,10 @@ use App\Models\Podcast;
 use App\Models\Character;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\BaseController;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\EpisodeUpdateRequest;
 use App\Http\Requests\AddEpisodePlayRequest;
 use App\Http\Requests\EpisodeCreationRequest;
@@ -28,6 +29,9 @@ class EpisodesController extends Controller
             } else {
                 $podcasts = Episode::get()->toArray();
             }
+            Log::info('how data is treated', [
+                "we are in the episodes controller", $podcasts
+            ]);
             return response()
                 ->json(['message' => 'podcasts successfully retrieved', 'data' => $podcasts]);
         } else {
