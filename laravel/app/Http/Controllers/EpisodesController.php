@@ -29,9 +29,9 @@ class EpisodesController extends Controller
             } else {
                 $podcasts = Episode::get()->toArray();
             }
-            Log::info('how data is treated', [
-                "we are in the episodes controller", $podcasts
-            ]);
+            // Log::info('how data is treated', [
+            //     "we are in the episodes controller", $podcasts
+            // ]);
             return response()
                 ->json(['message' => 'podcasts successfully retrieved', 'data' => $podcasts]);
         } else {

@@ -1,5 +1,8 @@
 ## Next steps
 
+Trouver un brui mélodieux pur bob le tapir
+Envoyer des requêtes en mentionnant plus de choses avec fetch depuis le front
+
 Installer laravel cors fruitcake:
 Your requirements could not be resolved to an installable set of packages.
 
