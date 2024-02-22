@@ -34,6 +34,7 @@ class EpisodesController extends Controller
             // ]);
             return response()
                 ->json(['message' => 'podcasts successfully retrieved', 'data' => $podcasts]);
+            // ->header('Access-Control-Allow-Origin', '*'); // Add CORS header to allow requests from any origin;
         } else {
             $podcast = Episode::where('id', '=', $request->input('episode_id'))->firstOrFail();
             return response()
