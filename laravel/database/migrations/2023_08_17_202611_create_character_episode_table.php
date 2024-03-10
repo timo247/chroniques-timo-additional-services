@@ -19,8 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('episode_id')->nullable(); // Nullable foreign key
             $table->timestamps();
 
-            $table->foreign('character_id')->references('id')->on('characters')->onDelete('cascade');
-            $table->foreign('episode_id')->references('id')->on('episodes')->onDelete('cascade');
+            $table->foreign('character_id')->references('id')->on('characters')->onUpdate('cascade')->onDelete('cascade');;
+            $table->foreign('episode_id')->references('id')->on('episodes')->onUpdate('cascade')->onDelete('cascade');;
         });
     }
 

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('episode_id')->nullable(); // Nullable foreign key
             $table->unsignedBigInteger('tag_id')->nullable(); // Nullable foreign key
             $table->timestamps();
-            $table->foreign('episode_id')->references('id')->on('episodes')->onDelete('cascade');
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreign('episode_id')->references('id')->on('episodes')->onUpdate('cascade')->onDelete('cascade');;
+            $table->foreign('tag_id')->references('id')->on('tags')->onUpdate('cascade')->onDelete('cascade');;
         });
     }
 
