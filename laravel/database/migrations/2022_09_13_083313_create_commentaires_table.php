@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('commentaires', function (Blueprint $table) {
             $table->id();
             $table->text('commentaire');
-            $table->integer('user_id');
-            $table->integer('episode_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('episode_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('episode_id')->references('id')->on('episodes')->onDelete('cascade')->onUpdate('cascade');
             $table->unique(["id", "user_id", "episode_id"]);

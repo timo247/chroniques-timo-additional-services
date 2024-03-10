@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('episodes', function (Blueprint $table) {
-            $table->integer('podcast_id');
+            $table->unsignedBigInteger('podcast_id');
             $table->id();
             $table->integer('no');
             $table->string('title');
