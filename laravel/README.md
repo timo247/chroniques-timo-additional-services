@@ -1,5 +1,11 @@
 ## Next steps
 
+Regarder auprès d'infomaniak si des backups automatiques sont faits, et si non, planifier d'en faire chaque semaine
+préparer un ecxel to sql permettant par la suite de seeder les épisodes à partir de fichiers excels (ou csv)
+Noter les épisodes réécoutés dans un fichier excel
+Une fois l'app prête, les données sont seedées à partir du fichier excel
+Une fois l'app prête, les fichiers sont insérés en étant renommés
+
 Trouver un brui mélodieux pur bob le tapir
 Envoyer des requêtes en mentionnant plus de choses avec fetch depuis le front
 
