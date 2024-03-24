@@ -1,5 +1,7 @@
 ## Next steps
 
+Protéger l'api avec une api key
+
 Regarder auprès d'infomaniak si des backups automatiques sont faits, et si non, planifier d'en faire chaque semaine
 préparer un ecxel to sql permettant par la suite de seeder les épisodes à partir de fichiers excels (ou csv)
 Noter les épisodes réécoutés dans un fichier excel
