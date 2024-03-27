@@ -38,7 +38,12 @@ Route::fallback(function () {
 });
 
 
-
+Route::group(['middleware' => ['api_key']], function () {
+    Route::get('/protected', function () {
+        var_dump(env('API_KEY'));
+        return response()->json(['data' => 'This route is protected.']);
+    });
+});
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -45,6 +45,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\JsonValidationResponse::class,
+            \App\Http\Middleware\ApiKeyMiddleware::class,
         ],
     ];
 
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\Admin::class,
+        'api_key' => \App\Http\Middleware\ApiKeyMiddleware::class,
     ];
 }
