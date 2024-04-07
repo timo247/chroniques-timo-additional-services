@@ -9,7 +9,8 @@
         <article class="row bg-primary">
             <div class="col-md-12">
                 <header>
-                    <h1><a href="{{ route('episodes.adminIndex', [$episode->id]) }}"> {{ $episode->title }} </a> </h1>
+                    <h1><a href="{{ route('episodes.show', ['id' => $episode->id]) }}"> {{ $episode->title }} </a>
+                    </h1>
                     <div class="pull-right">
                         @foreach ($episode->tags as $tag)
                             <span>{{ $tag->name }}</span>

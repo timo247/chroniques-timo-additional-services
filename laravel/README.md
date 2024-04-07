@@ -1,72 +1,90 @@
-## Next steps
+# Project Management
 
-Protéger l'api avec une api key
+## Administration de l'application
 
-Regarder auprès d'infomaniak si des backups automatiques sont faits, et si non, planifier d'en faire chaque semaine
-préparer un ecxel to sql permettant par la suite de seeder les épisodes à partir de fichiers excels (ou csv)
+### Récupération des données spotify
+
+Faire un script qui retrouve la liste des épisodes URIs
+Inclure ces URIs dans le fichier de seeding csv
+
+### Triage des podcasts
+
+Tenter à partir du fichier sanbox/sanbox/csv-tosql-scripts/episodes.csv + sandbox/sandbox/csv-tosql-scripts/episodes-seeder.csv de recréer la DB dans son état précédent
 Noter les épisodes réécoutés dans un fichier excel
-Une fois l'app prête, les données sont seedées à partir du fichier excel
-Une fois l'app prête, les fichiers sont insérés en étant renommés
 
-Trouver un brui mélodieux pur bob le tapir
-Envoyer des requêtes en mentionnant plus de choses avec fetch depuis le front
+### Nommage des fichiers
 
-Installer laravel cors fruitcake:
-Your requirements could not be resolved to an installable set of packages.
+Un script bash qui copie les fichiers audios et les renomme selon la convention utilisée par Episodescontroller
 
-Problem 1 - Root composer.json requires fruitcake/laravel-cors ^3.0 -> satisfiable by fruitcake/laravel-cors[v3.0.0, 3.0.x-dev]. - fruitcake/laravel-cors[v3.0.0, ..., 3.0.x-dev] require illuminate/support ^6|^7|^8|^9 -> found illuminate/support[v6.0.0, ..., 6.x-dev, v7.0.0, ..., 7.x-dev, v8.0.0, ..., 8.x-dev, v9.0.0-beta.1, ..., 9.x-dev] but these were not loaded, likely because it conflicts with another require.
+### Backups
 
-You can also try re-running composer require with an explicit version constraint, e.g. "composer require fruitcake/laravel-cors:\*" to figure out if any version is installable, or "composer require fruitcake/laravel-cors:^2.1" if you know which you need.
+Tester le redéploiement de la DB à partir d'un backup automatique fait par Infomaniak
 
-Organiserles ests de remplacement de fichiers et création
+### Déploiement
 
-ester la création et la modif d'épisode
-Mirgrer sur Mysql
-Tester une sauvegrde de la DB
-Appeler le backend depuis le front
+Le fichier de seeding csv et transformé en requête SQL
+La requête SQL est exécutée dans PHP myAdmin
+Les fichiers audios sont renommés et téléversés directement dans le dossier en ftp
+Si les smokes tests passent et que tout est bien déployé, faire un backup de la DB et l'enregistré en local et sur le Drive
+Modifier la valeur de la variable domain dans le fichier config/session.php ( https://laravel.com/docs/10.x/sanctum#spa-configuration https://www.youtube.com/watch?v=ajUST-jUMeg)
+Mettre à jour la doc de l'API
 
-To do: update handelPodcastIdChange
+### Affectation des personnages par épisodes (utiles pour l'éventuelle phase II de l'animation)
 
-Make the form for updating episodes
+Faire un script qui retrouve que personnage est adns quel épisode (ex à partir de la description)
+Génère ensuite une SQL query qui pourra être exécutée après la query qui enregistre tous les épisodes
 
-## Developper notes
+## Backend
 
-A middleware was added to displaye requests on laravel.logs
+### Vue update
 
-## Ajouter à la vue de création des épisodes la fonctionnalité d'insertion dynamique de thèmes.
+1. Rendre visibles sans click tous les tags de l'épisode directement
+2. Comprendre pouruqoi je peux pas updater d'episode
+3. Tester /pdate handelPodcastIdChange
+4. Rendre accessible la vue edit de puis show et depuis la liste de tous les episode
 
--> Mettre le form d'ajout de tag dans une div sans form et la monter
--> Vérifier les tags nouvellement créés
+### Vue show
 
-## Ajouter créer la vue update episode, et ajouter les liens permettant de s'y rendre depuis episode list et episode single display.
+1. Ajouter la fonctionnalité de prévusalisation et écoute spotify pour chaque épisode (à partir des données de l'épisode, construire un iframe à l'aide de l'api spotify)
 
-2. Ajouter une colonne spotify_uri aux épidodes: https://developer.spotify.com/documentation/embeds/tutorials/using-the-iframe-api
+## Front End
 
-https://developer.spotify.com/documentation/web-api/concepts/spotify-uris-ids
+### Next steps
 
-7okkT503mfXa4QKgOOATvz
+1. Finir la partie animation
+2. Développement de l'UI
 
-3. Tenter de lire un épisode à l'aide du iframe spotify (cf stratégie sur drive)
+### Animation
 
-4. Retrouver la liste des épisodes URIs et seeder la base de données
+#### Fonctionment
 
-5. Créer la vue d'administration permettant d'affilier des tags aux épisodes et de les prévisualiser (les lire) à l'aide d'Irame pour s'assurer de la véracité du lien.
+Le backgorund est animé à l'aide d'un canva
+Le dessin du background est composé de différents groupe (ex: groupe nuage1, grouipe nuage 2, groupe arbre)
+Chaque groupe qui doit être anuimé est redessiné à chaque animationframe
 
-6. Migrer la BDD vers MySQL
+#### Next steps
 
-7. Déployer l'app, et remplir progressivement l'affiliation des thèmes dans la base de données à l'aide de l'interface
+Faire des Wireframes low fi de l'app utlilisateur
+Grouper toutes les composantes de limage dans Figma selon ce qui doit être animé
+Dessiner les variations par groupe et faire les tests à l'aide de la fonctionnalité présentée ici: https://www.youtube.com/watch?v=8vhhc0J-Mtw
+Coder l'animation en mode infini de l'image dans un folder dans sandbox
+Faire les wireframes high fidelity
 
-## Rappel au momment du déploiement
+#### Animations additionnelles (Phase II)
 
-Modifier la valeur de la variable domain dans le fichier config/session.php
-https://laravel.com/docs/10.x/sanctum#spa-configuration
-https://www.youtube.com/watch?v=ajUST-jUMeg
+Selon le personnege de l'épisode, l'animal apparait dans l'animation eu début. Il s'arrête et fait son idle. Avant la fin, il repart.
+gaider arrive de gauche à droite, Bob de droite à gauche, Maepatou arrive d'en haut et MAkamba sort de l'arbre.
 
-Mettre .env dans gitignore et tous les seeders comportant des données sensibles
+### Développement de l?UI
+
+Optimiser la fonctionnalité de recherche de thèmes à l'aide de la barre de recherche en y ajoutant des suggestions
+Adapter la fonctionnalité de génération dynamique de playlist
+Intégrer l'animation
 
 ## Idéees pour la suite
 
 -   Faire des séries d'épisodes préméditées par personnage et par thématique
+-   Faire des tests UX sur l'interface
 
 # Podcast Management App API Endpoints
 

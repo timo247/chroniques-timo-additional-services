@@ -23,7 +23,7 @@ Route::get('/', function () {
 // Route::resource('articles', ArticleController::class, ['except' => ['show', 'edit', 'update']]);
 Route::get('/episodes', [EpisodesController::class, 'adminIndex'])->name('episodes.adminIndex');
 Route::get('/episodes/create', [EpisodesController::class, 'create'])->name('episodes.create');
-Route::get('/episodes/{id}', [EpisodesController::class, 'show']);
+Route::get('/episodes/{id}', [EpisodesController::class, 'show'])->name('episodes.show');
 Route::get('/episodes/{id}/edit', [EpisodesController::class, 'edit']);
 Route::post('/episodes/{id}', [EpisodesController::class, 'update'])->name('episodes.update');
 
