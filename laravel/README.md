@@ -64,11 +64,8 @@ Chaque groupe qui doit être anuimé est redessiné à chaque animationframe
 
 #### Next steps
 
-Faire des Wireframes low fi de l'app utlilisateur
-Grouper toutes les composantes de limage dans Figma selon ce qui doit être animé
 Dessiner les variations par groupe et faire les tests à l'aide de la fonctionnalité présentée ici: https://www.youtube.com/watch?v=8vhhc0J-Mtw
 Coder l'animation en mode infini de l'image dans un folder dans sandbox
-Faire les wireframes high fidelity
 
 #### Animations additionnelles (Phase II)
 
