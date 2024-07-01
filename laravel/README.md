@@ -56,6 +56,27 @@ Génère ensuite une SQL query qui pourra être exécutée après la query qui e
 
 ### Animation
 
+#### Outils d'animation
+
+##### type videos marketing
+
+canva
+https://www.animaker.fr/
+https://www.powtoon.com/
+https://lumen5.com/
+
+##### type code
+
+https://codepen.io/
+https://jsfiddle.net/
+https://svgartista.net/
+
+#### logiciels
+
+https://www.adobe.com/products/animate.html
+https://lottiefiles.com/
+https://www.adobe.com/products/aftereffects.html
+
 #### Fonctionment
 
 Le backgorund est animé à l'aide d'un canva
