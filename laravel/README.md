@@ -81,12 +81,13 @@ https://www.adobe.com/products/aftereffects.html
 
 Le backgorund est animé à l'aide d'un canva
 Le dessin du background est composé de différents groupe (ex: groupe nuage1, grouipe nuage 2, groupe arbre)
-Chaque groupe qui doit être anuimé est redessiné à chaque animationframe
+Chaque groupe qui doit être anuimé est redessiné à chaque animationframe.
 
 #### Next steps
 
-Dessiner les variations par groupe et faire les tests à l'aide de la fonctionnalité présentée ici: https://www.youtube.com/watch?v=8vhhc0J-Mtw
-Coder l'animation en mode infini de l'image dans un folder dans sandbox
+Chercher un moyen de pouvoir utiliser des frames:
+
+1. Les frames ont une largeur proportionnelle à la largeur de la fenêtre du navigateur. La hauteur du frame est proportionnelle pour que le frame ait les mêmes proportions que le frame figma. Le frame occuppe une position de (0:0) dans la fenêtre. La géométrie des éléments est calculée en fonction du frame, et non du ctx.canvas.width.
 
 #### Animations additionnelles (Phase II)
 
